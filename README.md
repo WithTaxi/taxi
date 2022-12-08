@@ -1,6 +1,6 @@
 # Taxi
 
-  #🚀 master 브랜치는 최종본임 master에 커밋 푸쉬 하지 않도록 주의할 
+# 🚀 master 브랜치는 최종본임 master에 커밋 푸쉬 하지 않도록 주의할 것
   
   - lombok, srping web, spring devtools, mysql, jpa 의존성만 추가함
   - 추가 기능은 각자 개발하면서 추가하면 됨 (브랜치 master 말고 각자걸로 checkout해서 진행할 것)
