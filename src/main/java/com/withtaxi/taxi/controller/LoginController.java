@@ -2,20 +2,21 @@ package com.withtaxi.taxi.controller;
 
 import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class LoginController {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/user")
     public String user() {
