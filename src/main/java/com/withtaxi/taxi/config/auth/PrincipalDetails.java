@@ -29,7 +29,7 @@ public class PrincipalDetails implements UserDetails {
     // 아이디 가져오는 거임
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getUserId();
     }
 
     @Override

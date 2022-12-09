@@ -12,9 +12,7 @@ import java.sql.Timestamp;
 @Data
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; // 아이디가 이거롤 쓰면 안될거같아
-    private String username; // 아이디임 (JPA 개어려워서 어쩔수없이 변수명 이난리고 사실상 유저 아이디 적는곳)
+    private String userId;
     private String password;
     private String name; // 성명 적는 곳
     private String nickName; // 중복여부 파악해야할듯?

@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
+                .usernameParameter("userId")
                 .loginPage("/loginForm")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/");
