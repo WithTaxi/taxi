@@ -1,6 +1,6 @@
 package com.withtaxi.taxi.config;
 
-import com.withtaxi.taxi.config.auth.oauth.PrincipalOauth2UserService;
+import com.withtaxi.taxi.config.oauth.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

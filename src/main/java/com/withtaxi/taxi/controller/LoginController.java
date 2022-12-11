@@ -1,12 +1,15 @@
 package com.withtaxi.taxi.controller;
 
+import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,7 +20,7 @@ public class LoginController {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/user")
-    public String user() {
+    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return "user";
     }
 
