@@ -14,23 +14,11 @@ public class LoginController {
 
 
     private final UserRepository userRepository;
-
-
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/user")
     public String user() {
         return "user";
-    }
-
-    @GetMapping("/admin")
-    public String admin() {
-        return "admin";
-    }
-
-    @GetMapping("/manager")
-    public String manager() {
-        return "manager";
     }
 
     @GetMapping("/loginForm") // SecurityConfig 파일을 작성하면 스프링시큐리티의 자동 login 페이지 사용 불가능
