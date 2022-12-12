@@ -22,18 +22,17 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
+        String snsName = userRequest.getClientRegistration().getRegistrationId();
 
-        System.out.println("oAuth2User.getAttributes() : " + oAuth2User.getAttributes());
-        System.out.println("userRequest : " + userRequest.getClientRegistration().getRegistrationId());
         OAuth2UserInfo oAuth2UserInfo = null;
 
-        if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
+        if (snsName.equals("google")) {
             oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
-        } else if (userRequest.getClientRegistration().getRegistrationId().equals("facebook")) {
+        } else if (snsName.equals("facebook")) {
             oAuth2UserInfo = new FacebookUserInfo(oAuth2User.getAttributes());
-        } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+        } else if (snsName.equals("naver")) {
             oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
-        } else if (userRequest.getClientRegistration().getRegistrationId().equals("kakao")) {
+        } else if (snsName.equals("kakao")) {
             oAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
         }
 
