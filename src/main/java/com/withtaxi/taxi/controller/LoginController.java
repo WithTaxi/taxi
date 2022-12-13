@@ -19,6 +19,12 @@ public class LoginController {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /***
+     * user 정보 조회 API
+     * @param principalDetails
+     * @return
+     */
+
     @GetMapping("/user")
     public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return "user";
