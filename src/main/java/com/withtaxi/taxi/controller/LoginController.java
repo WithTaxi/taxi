@@ -24,12 +24,15 @@ public class LoginController {
      * @param principalDetails
      * @return
      */
-
     @GetMapping("/user")
     public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return "user";
     }
 
+    /***
+     * 일반 로그인
+     * @return
+     */
     @GetMapping("/loginForm") // SecurityConfig 파일을 작성하면 스프링시큐리티의 자동 login 페이지 사용 불가능
     public String loginForm() {
         return "loginForm";
