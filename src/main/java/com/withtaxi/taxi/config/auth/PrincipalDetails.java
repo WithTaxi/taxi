@@ -1,21 +1,35 @@
 package com.withtaxi.taxi.config.auth;
 
 import com.withtaxi.taxi.model.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
+import java.util.Map;
 
-public class PrincipalDetails implements UserDetails {
+@Getter
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;
+
+    private Map<String, Object> attributes;
 
     public PrincipalDetails(User user) {
         this.user = user;
     }
 
-    // User의 권한을 리턴하는 곳
-    // 그러나 지금상황으로는 딱히? 권한이 필요한가?
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -26,10 +40,9 @@ public class PrincipalDetails implements UserDetails {
         return user.getPassword();
     }
 
-    // 아이디 가져오는 거임
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getUserId();
     }
 
     @Override
@@ -50,5 +63,10 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }
