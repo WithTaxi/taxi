@@ -38,7 +38,11 @@ public class LoginController {
         return "loginForm";
     }
 
-    @GetMapping("/joinForm") // 회원가입 홈페이지로 이동
+    /***
+     * 회원가입 홈페이지 이동
+     * @return
+     */
+    @GetMapping("/joinForm")
     public String joinForm() {
         return "joinForm";
     }
