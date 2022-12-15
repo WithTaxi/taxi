@@ -47,6 +47,11 @@ public class LoginController {
         return "joinForm";
     }
 
+    /***
+     * 회원가입 로직
+     * @param user
+     * @return
+     */
     @PostMapping("/join")
     public String join(User user) {
         String rawPassword = user.getPassword();
