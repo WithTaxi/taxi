@@ -25,8 +25,8 @@ public class LoginController {
      * @return
      */
     @GetMapping("/user")
-    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        return "user";
+    public @ResponseBody User user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        return principalDetails.getUser();
     }
 
     /***
