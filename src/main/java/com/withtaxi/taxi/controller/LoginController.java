@@ -9,7 +9,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,9 +25,9 @@ public class LoginController {
     /***
      * user 정보 조회 API
      * @param principalDetails
-     * @return
+     * @return principalDetails.getUser()
      */
-    @GetMapping("/user")
+    @GetMapping("/userInfo")
     public @ResponseBody User user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return principalDetails.getUser();
     }
@@ -53,7 +56,6 @@ public class LoginController {
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
         userRepository.save(user);
-
         return "redirect:/loginForm";
     }
 }
