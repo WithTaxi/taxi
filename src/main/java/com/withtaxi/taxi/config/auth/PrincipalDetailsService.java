@@ -17,6 +17,12 @@ public class PrincipalDetailsService implements UserDetailsService {
 
     // 아이디 가져오는 것 (메서드 이름만 Username)
 
+    /***
+     * 로그인 메서드
+     * @param username the username identifying the user whose data is required.
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User userEntity = userRepository.findByUserId(username);
@@ -25,4 +31,6 @@ public class PrincipalDetailsService implements UserDetailsService {
         }
         return null;
     }
+
+
 }

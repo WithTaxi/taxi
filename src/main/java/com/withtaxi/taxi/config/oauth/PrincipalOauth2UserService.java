@@ -44,7 +44,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String name = oAuth2UserInfo.getName();
 
 
-        User userEntity = userRepository.findByUserId(userId);
+        User userEntity = userRepository.findByUserId(userId); // 유저 아이디로 확인함
 
         if (userEntity == null) {
             userEntity = User.builder()
