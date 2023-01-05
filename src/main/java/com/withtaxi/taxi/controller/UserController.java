@@ -23,7 +23,7 @@ public class UserController {
      * @param principalDetails
      * @return principalDetails.getUser()
      */
-    @GetMapping("")
+    @GetMapping("/info")
     public User user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return principalDetails.getUser();
     }
@@ -43,7 +43,7 @@ public class UserController {
      * @param user
      * @return db에 값 저장
      */
-    @PostMapping("")
+    @PostMapping("/join")
     public User registerUser(@RequestBody User user) {
         return userService.registerUser(user);
     }
