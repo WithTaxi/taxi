@@ -65,13 +65,15 @@ public class UserController {
     /***
      * 아이디 찾기 API
      * 없는 아이디였으면 "존재하지 않는 회원 정보입니다 "
-     * @param name
-     * @param email
+     * @param user
      * @return
      */
 
     @GetMapping("/findId")
-    public @ResponseBody String findId(@RequestParam("name") String name, @RequestParam("email") String email) {
+    public String findId(@RequestBody User user) {
+        String name = user.getName();
+        String email = user.getEmail();
+
         try {
             User result = userService.findId(name, email);
             return result.getUserId();
