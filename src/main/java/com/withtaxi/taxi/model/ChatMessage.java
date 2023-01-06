@@ -1,7 +1,7 @@
 package com.withtaxi.taxi.model;
 
 import lombok.*;
-
+//ChatMessage
 @Getter
 @Setter
 @NoArgsConstructor
