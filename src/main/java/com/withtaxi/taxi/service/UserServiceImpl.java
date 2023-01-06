@@ -4,6 +4,7 @@ import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User findId(String name, String email) {
@@ -35,8 +36,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public User registerUser(User user) {
         String rawPassword = user.getPassword();
-        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+        String encPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
+        user.setRole("USER");
         return userRepository.save(user);
     }
 
