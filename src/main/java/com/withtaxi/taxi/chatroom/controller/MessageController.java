@@ -1,8 +1,8 @@
-package com.withtaxi.taxi.controller;
+package com.withtaxi.taxi.chatroom.controller;
 
 
-import com.withtaxi.taxi.model.ChatMessage;
-import com.withtaxi.taxi.repository.ChatRepository;
+import com.withtaxi.taxi.chatroom.model.ChatMessage;
+import com.withtaxi.taxi.chatroom.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
