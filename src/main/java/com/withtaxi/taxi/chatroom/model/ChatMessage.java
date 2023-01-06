@@ -1,4 +1,4 @@
-package com.withtaxi.taxi.model;
+package com.withtaxi.taxi.chatroom.model;
 
 import lombok.*;
 //ChatMessage
