@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-// 인준
+// ChatRepository
 @Repository
 @Service
 @Slf4j
