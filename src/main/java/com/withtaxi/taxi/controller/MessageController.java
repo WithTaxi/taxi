@@ -1,8 +1,8 @@
-package com.withtaxi.taxi.chatroom.controller;
+package com.withtaxi.taxi.controller;
 
 
-import com.withtaxi.taxi.chatroom.model.ChatMessage;
-import com.withtaxi.taxi.chatroom.repository.ChatRepository;
+import com.withtaxi.taxi.model.ChatMessage;
+import com.withtaxi.taxi.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-//MessageController
 
 @Controller
 @RequiredArgsConstructor

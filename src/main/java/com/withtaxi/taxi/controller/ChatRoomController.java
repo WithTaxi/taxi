@@ -1,7 +1,7 @@
-package com.withtaxi.taxi.chatroom.controller;
+package com.withtaxi.taxi.controller;
 
-import com.withtaxi.taxi.chatroom.model.ChatRoom;
-import com.withtaxi.taxi.chatroom.repository.ChatRepository;
+import com.withtaxi.taxi.model.ChatRoom;
+import com.withtaxi.taxi.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-//ChatRoomController
 
 @Controller
 @RequiredArgsConstructor
