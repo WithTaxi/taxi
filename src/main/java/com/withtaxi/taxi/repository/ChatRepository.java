@@ -1,6 +1,6 @@
-package com.withtaxi.taxi.chatroom.repository;
+package com.withtaxi.taxi.repository;
 
-import com.withtaxi.taxi.chatroom.model.ChatRoom;
+import com.withtaxi.taxi.model.ChatRoom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-// ChatRepository
+
 @Repository
 @Service
 @Slf4j
