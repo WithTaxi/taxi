@@ -23,8 +23,6 @@ public class User {
     private String email; // 이메일인증 구현
     private String university; // 텍스트박스로 선택할 수 있게
 
-    private String role;
-
     private String provider; // sns 종류
     private String providerId; // sns 아이디
 
@@ -41,7 +39,6 @@ public class User {
                 String birthday,
                 String email,
                 String university,
-                String role,
                 String provider,
                 String providerId,
                 Timestamp createDate) {
@@ -54,7 +51,6 @@ public class User {
         this.birthday = birthday;
         this.email = email;
         this.university = university;
-        this.role = role;
         this.provider = provider;
         this.providerId = providerId;
         this.createDate = createDate;
