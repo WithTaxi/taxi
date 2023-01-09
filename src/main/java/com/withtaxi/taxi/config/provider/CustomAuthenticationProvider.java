@@ -31,14 +31,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        System.out.println("CustomAuthentication 실행");
-
-        // 회원이 있다면 loadUserByUserName을 통해서 회원유무 판단 가능
-        PrincipalDetails principalDetails = (PrincipalDetails) principalDetailsService.loadUserByUsername(authentication.getName());
+        String userId = authentication.getName();
         String reqPassword = authentication.getCredentials().toString(); // 받아온 값
 
+        PrincipalDetails principalDetails = (PrincipalDetails) principalDetailsService.loadUserByUsername(userId);
+
         if(!passwordEncoder.matches(reqPassword, principalDetails.getPassword())) {
-            throw new BadCredentialsException("");
+            throw new BadCredentialsException("password is not matched");
         }
 
 
