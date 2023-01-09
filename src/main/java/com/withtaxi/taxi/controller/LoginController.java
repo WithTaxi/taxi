@@ -1,30 +1,31 @@
 package com.withtaxi.taxi.controller;
 
-import com.withtaxi.taxi.model.User;
-import com.withtaxi.taxi.service.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequiredArgsConstructor
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/login")
+@Slf4j
 public class LoginController {
 
-    /***
-     * 일반 로그인
-     * @return
-     */
-    @GetMapping("/loginForm") // SecurityConfig 파일을 작성하면 스프링시큐리티의 자동 login 페이지 사용 불가능
-    public String loginForm() {
-        return "loginForm";
+    @GetMapping("/success")
+    public ResponseEntity success() {
+        log.info("로그인 성공");
+        Map<String, Object> map = new HashMap<>();
+        map.put("result", 1);
+        return new ResponseEntity(map, HttpStatus.OK);
     }
 
-    /***
-     * 회원가입 홈페이지 이동
-     * @return
-     */
-    @GetMapping("/joinForm")
-    public String joinForm() {
-        return "joinForm";
+    @GetMapping("/fail")
+    public ResponseEntity fail() {
+        log.info("로그인 실패");
+        Map<String, Object> map = new HashMap<>();
+        map.put("result", 0);
+        return new ResponseEntity(map, HttpStatus.OK);
     }
 }

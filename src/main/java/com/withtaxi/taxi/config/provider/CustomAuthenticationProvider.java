@@ -35,9 +35,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         // 회원이 있다면 loadUserByUserName을 통해서 회원유무 판단 가능
         PrincipalDetails principalDetails = (PrincipalDetails) principalDetailsService.loadUserByUsername(authentication.getName());
-        System.out.println(principalDetails.getUser());
         String reqPassword = authentication.getCredentials().toString(); // 받아온 값
-        System.out.println(reqPassword);
 
         if(!passwordEncoder.matches(reqPassword, principalDetails.getPassword())) {
             throw new BadCredentialsException("");
