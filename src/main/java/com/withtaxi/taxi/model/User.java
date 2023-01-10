@@ -1,22 +1,27 @@
 package com.withtaxi.taxi.model;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
+@Builder
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class User {
+    public enum MessageType{
+        ENTER, TALK, LEAVE
+    }
     @Id
     private String userId;
     private String password;
     private String name; // 성명 적는 곳
-    private String nickName; // 중복여부 파악해야할듯?
+    private String nickName; // 중복여부 파악해야할듯? // 채팅방 닉네임
     private String sex;
     private String mobile; // 모바일 인증이 될까?
     private String birthday;
@@ -26,8 +31,14 @@ public class User {
     private String provider; // sns 종류
     private String providerId; // sns 아이디
 
-    @CreationTimestamp
-    private Timestamp createDate; // 회원가입 날짜
+    private MessageType type; // 메세지 타입
+    private String roomId;    //채팅방 ID
+    private String message; // 메세지 내용
+    private String sender;
+
+
+//    @CreationTimestamp 복구 예정
+//    private Timestamp createDate; // 회원가입 날짜
 
     @Builder
     public User(String userId,
@@ -40,8 +51,8 @@ public class User {
                 String email,
                 String university,
                 String provider,
-                String providerId,
-                Timestamp createDate) {
+                String providerId){
+// 복구예정               Timestamp createDate) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -53,7 +64,7 @@ public class User {
         this.university = university;
         this.provider = provider;
         this.providerId = providerId;
-        this.createDate = createDate;
+//        this.createDate = createDate; 복구예정
     }
 }
 
