@@ -31,6 +31,12 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        response.setHeader("Access-Control-Allow-Credentials", "false");
+        response.setHeader("Access-Control-Allow-Methods", "POST");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Max-Age", "3000");
+
         System.out.println("로그인 실패");
 
         objectMapper.writeValue(response.getWriter(),0);
