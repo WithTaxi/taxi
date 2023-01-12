@@ -26,13 +26,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String userId = authentication.getName();
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
 
         System.out.println("로그인 성공");
 
-        objectMapper.writeValue(response.getWriter(), response.getStatus());
+        objectMapper.writeValue(response.getWriter(), 1);
     }
 }

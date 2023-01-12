@@ -29,16 +29,10 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        Map<String, Object> map = new HashMap<>();
-        map.put("result", 0);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-        ResponseEntity responseEntity = new ResponseEntity(map, HttpStatus.valueOf(response.getStatus()));
-
-
         System.out.println("로그인 실패");
 
-        objectMapper.writeValue(response.getWriter(), responseEntity);
+        objectMapper.writeValue(response.getWriter(),0);
     }
 }
