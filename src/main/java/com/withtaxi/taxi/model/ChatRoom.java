@@ -1,5 +1,6 @@
 package com.withtaxi.taxi.model;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,13 +16,10 @@ import java.util.UUID;
 public class ChatRoom {
 
     @Id
-    private Long id;
-
     private String roomId;
     private String roomName;
-    private long userCount; // 채팅방 인원수
+    private long userCount; // 채팅방 실시간 인원수
     private long maxUserCnt = 4; // 최대 인원
-
 
 
     @Transient
@@ -31,7 +29,7 @@ public class ChatRoom {
     public ChatRoom create(String name) {
         ChatRoom room = new ChatRoom();
         room.roomId = UUID.randomUUID().toString();
-        room.roomName = name;
+        room.roomName = name ;
 
         return room;
     }
