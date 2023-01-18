@@ -63,6 +63,7 @@ public class ChatService {
         return chatRooms.get(name);
     }
 
+    //
     public String addUser(String roomId, String userName){
         ChatRoom room = chatRooms.get(roomId);
         String userUUID = UUID.randomUUID().toString();
@@ -74,7 +75,6 @@ public class ChatService {
     public void delUser(String roomId, String userUUID){
         ChatRoom room = chatRooms.get(roomId);
         room.getUserlist().remove(userUUID);
-
     }
     public String getUserName(String roomId, String userUUID){
         ChatRoom room = chatRooms.get(roomId);
