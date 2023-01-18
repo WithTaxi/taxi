@@ -22,6 +22,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         HttpSession session = request.getSession();
         session.setMaxInactiveInterval(60);
-        response.sendRedirect("http://localhost:8080/api/login/success");
+        response.sendRedirect("/api/login/success");
     }
 }
