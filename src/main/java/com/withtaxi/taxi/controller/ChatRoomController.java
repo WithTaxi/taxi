@@ -1,7 +1,7 @@
 package com.withtaxi.taxi.controller;
 
 import com.withtaxi.taxi.model.ChatRoom;
-import com.withtaxi.taxi.repository.ChatRepository;
+import com.withtaxi.taxi.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import java.util.List;
 public class ChatRoomController {
 
     @Autowired
-    private final ChatRepository chatService;
+    private final ChatService chatService;
 
     // 채팅 리스트 화면
     @GetMapping("/room")
