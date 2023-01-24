@@ -56,7 +56,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
         }
         LoginDTO loginDTO = objectMapper.readValue(StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), LoginDTO.class);
 
-        String userId = loginDTO.getUsername();
+        String userId = loginDTO.getUserId();
         String password = loginDTO.getPassword();
 
         if (userId == null || password == null) {
@@ -75,7 +75,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
 
     @Data
     private static class LoginDTO{
-        String username;
+        String userId;
         String password;
     }
 }
