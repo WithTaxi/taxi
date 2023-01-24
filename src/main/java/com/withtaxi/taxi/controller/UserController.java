@@ -19,32 +19,13 @@ public class UserController {
 
     /***
      * user 정보 조회 API
+     * 내정보
      * @param principalDetails
      * @return principalDetails.getUser()
      */
     @GetMapping("/info")
     public User user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return principalDetails.getUser();
-    }
-
-    /***
-     * userId로 user정보 받아오는 API
-     * @param userId
-     * @return user정보
-     */
-    @GetMapping("/{userId}")
-    public User getUserByUserId(@PathVariable String userId) {
-        return userService.getUserByUserId(userId);
-    }
-
-    /***
-     * 회원가입 API
-     * @param user
-     * @return db에 값 저장
-     */
-    @PostMapping("/join")
-    public User registerUser(@RequestBody User user) {
-        return userService.registerUser(user);
     }
 
 //    @PutMapping("/{userId}")
