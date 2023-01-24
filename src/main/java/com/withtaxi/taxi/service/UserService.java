@@ -13,15 +13,5 @@ public interface UserService {
      */
     User findId(String name, String email);
 
-    /***
-     *
-     * @param userId
-     * @return
-     */
-    User getUserByUserId(String userId);
-
-    User registerUser(User user);
-
-
     void removeUser(String userId);
 }
