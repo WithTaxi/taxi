@@ -28,16 +28,6 @@ public class UserController {
     }
 
     /***
-     * userId로 user정보 받아오는 API
-     * @param userId
-     * @return user정보
-     */
-    @GetMapping("/{userId}")
-    public User getUserByUserId(@PathVariable String userId) {
-        return userService.getUserByUserId(userId);
-    }
-
-    /***
      * 회원가입 API
      * @param user
      * @return db에 값 저장
