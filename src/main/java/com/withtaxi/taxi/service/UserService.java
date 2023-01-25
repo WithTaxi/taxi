@@ -5,12 +5,13 @@ import com.withtaxi.taxi.model.User;
 
 public interface UserService {
 
-    public User findId(String name, String email);
-
-    User getUserByUserId(String userId);
-
-    User registerUser(User user);
-
+    /***
+     * 아이디 찾기
+     * @param name
+     * @param email
+     * @return
+     */
+    User findId(String name, String email);
 
     void removeUser(String userId);
 }
