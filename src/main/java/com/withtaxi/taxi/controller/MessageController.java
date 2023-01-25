@@ -1,7 +1,6 @@
 package com.withtaxi.taxi.controller;
 
 
-import com.withtaxi.taxi.model.ChatMessage;
 import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.service.ChatService;
 import lombok.Data;
@@ -30,18 +29,18 @@ public class MessageController {
     ChatService service;
 
     @MessageMapping("/chat/message")
-    public void enterUser(ChatMessage chat, SimpMessageHeaderAccessor headerAccessor){
+    public void enterUser(User user, SimpMessageHeaderAccessor headerAccessor){
 
 
-        if (ChatMessage.MessageType.ENTER.equals(chat.getType())) {
-            service.plusUserCnt(chat.getRoomId());
-            String userUUID = service.addUser(chat.getRoomId(), chat.getSender());
+        if (User.MessageType.ENTER.equals(user.getType())) {
+            service.plusUserCnt(user.getRoomId());
+            String userUUID = service.addUser(user.getRoomId(), user.getSender());
 
             headerAccessor.getSessionAttributes().put("userUUID",userUUID);
-            headerAccessor.getSessionAttributes().put("roomId",chat.getRoomId());
-            chat.setMessage(chat.getSender() + " 님이 입장하셨습니다");
+            headerAccessor.getSessionAttributes().put("roomId",user.getRoomId());
+            user.setMessage(user.getSender() + " 님이 입장하셨습니다");
         }
-        sendingOperations.convertAndSend("/topic/chat/room/"+chat.getRoomId(),chat);
+        sendingOperations.convertAndSend("/topic/chat/room/"+user.getRoomId(),user);
     }
 
     @EventListener
@@ -57,12 +56,12 @@ public class MessageController {
         service.delUser(roomId, userUUID);
 
         if (username != null ){
-            ChatMessage chat = ChatMessage.builder()
-                    .type(ChatMessage.MessageType.LEAVE)
-                    .sender(username)
+            User user = User.builder()
+                    .type(User.MessageType.LEAVE)
+                    .nickName(username)
                     .message(username + " 님 퇴장")
                     .build();
-            sendingOperations.convertAndSend("/topic/chat/room/" + roomId,chat);
+            sendingOperations.convertAndSend("/topic/chat/room/" + roomId,user);
         }
 
 

@@ -5,6 +5,7 @@ import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -19,13 +20,32 @@ public class UserController {
 
     /***
      * user 정보 조회 API
-     * 내정보
      * @param principalDetails
      * @return principalDetails.getUser()
      */
-    @GetMapping("/info")
+    @GetMapping("")
     public User user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return principalDetails.getUser();
+    }
+
+    /***
+     * userId로 user정보 받아오는 API
+     * @param userId
+     * @return user정보
+     */
+    @GetMapping("/{userId}")
+    public User getUserByUserId(@PathVariable String userId) {
+        return userService.getUserByUserId(userId);
+    }
+
+    /***
+     * 회원가입 API
+     * @param user
+     * @return db에 값 저장
+     */
+    @PostMapping("")
+    public User registerUser(@RequestBody User user) {
+        return userService.registerUser(user);
     }
 
 //    @PutMapping("/{userId}")
@@ -45,15 +65,13 @@ public class UserController {
     /***
      * 아이디 찾기 API
      * 없는 아이디였으면 "존재하지 않는 회원 정보입니다 "
-     * @param user
+     * @param name
+     * @param email
      * @return
      */
 
-    @PostMapping("/findId")
-    public String findId(@RequestBody User user) {
-        String name = user.getName();
-        String email = user.getEmail();
-
+    @GetMapping("/findId")
+    public @ResponseBody String findId(@RequestParam("name") String name, @RequestParam("email") String email) {
         try {
             User result = userService.findId(name, email);
             return result.getUserId();

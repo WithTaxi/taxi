@@ -17,10 +17,9 @@ public class EmailServiceImpl implements EmailService{
     @Autowired
     JavaMailSender javaMailSender;
 
-    public static String ePw = null;
+    public static final String ePw = createKey();
 
     private MimeMessage createMessage(String to) throws Exception {
-        ePw = createKey();
         System.out.println("보내는 대상 : " + to);
         System.out.println("인증 번호 : " + ePw);
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -57,11 +56,11 @@ public class EmailServiceImpl implements EmailService{
 
             switch (index) {
                 case 0:
-                    key.append((char) ((rnd.nextInt(26)) + 97));
+                    key.append((char) ((int) (rnd.nextInt(26)) + 97));
                     //  a~z  (ex. 1+97=98 => (char)98 = 'b')
                     break;
                 case 1:
-                    key.append((char) ((rnd.nextInt(26)) + 65));
+                    key.append((char) ((int) (rnd.nextInt(26)) + 65));
                     //  A~Z
                     break;
                 case 2:
