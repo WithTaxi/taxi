@@ -44,6 +44,7 @@ public class MessageController {
         sendingOperations.convertAndSend("/topic/chat/room/"+chat.getRoomId(),chat);
     }
 
+
     @EventListener
     public void webSocketDisconnectListener(SessionDisconnectEvent event){
 

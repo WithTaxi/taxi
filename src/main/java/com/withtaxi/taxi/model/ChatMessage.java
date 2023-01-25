@@ -2,6 +2,7 @@ package com.withtaxi.taxi.model;
 
 import lombok.*;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
