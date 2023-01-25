@@ -17,6 +17,7 @@ import java.io.IOException;
  * 유저는 localhost:8080/login으로 아이디와 비밀번호를 전송하고
  * 성공하면 현재 클래스가 응답해서 마지막 sendRedirect가 발생함.
  */
+// 제발
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
