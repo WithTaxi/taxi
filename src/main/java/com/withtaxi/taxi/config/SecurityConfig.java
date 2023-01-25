@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
     private final PrincipalOauth2UserService principalOauth2UserService;
     private final JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter;
 

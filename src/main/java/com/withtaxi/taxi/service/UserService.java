@@ -3,7 +3,6 @@ package com.withtaxi.taxi.service;
 
 import com.withtaxi.taxi.model.User;
 
-
 public interface UserService {
 
     /***
@@ -16,3 +15,4 @@ public interface UserService {
 
     void removeUser(String userId);
 }
+

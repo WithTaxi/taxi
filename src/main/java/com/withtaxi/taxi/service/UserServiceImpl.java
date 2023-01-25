@@ -3,6 +3,7 @@ package com.withtaxi.taxi.service;
 import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

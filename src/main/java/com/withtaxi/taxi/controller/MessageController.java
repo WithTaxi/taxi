@@ -58,12 +58,12 @@ public class MessageController {
         service.delUser(roomId, userUUID);
 
         if (username != null ){
-            ChatMessage chat = ChatMessage.builder()
+            ChatMessage chatMessage = ChatMessage.builder()
                     .type(ChatMessage.MessageType.LEAVE)
                     .sender(username)
                     .message(username + " 님 퇴장")
                     .build();
-            sendingOperations.convertAndSend("/topic/chat/room/" + roomId,chat);
+            sendingOperations.convertAndSend("/topic/chat/room/" + roomId,chatMessage);
         }
 
 
