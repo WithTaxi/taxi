@@ -2,7 +2,6 @@ package com.withtaxi.taxi.manager;
 
 import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.config.auth.PrincipalDetailsService;
-import com.withtaxi.taxi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,7 +1,6 @@
 package com.withtaxi.taxi.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.config.handler.CustomAuthenticationFailureHandler;
 import com.withtaxi.taxi.config.handler.CustomAuthenticationSuccessHandler;
 import lombok.Data;
