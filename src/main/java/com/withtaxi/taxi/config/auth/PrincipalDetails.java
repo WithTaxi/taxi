@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.Map;
-// 제발
 
 @Getter
 public class PrincipalDetails implements UserDetails, OAuth2User {

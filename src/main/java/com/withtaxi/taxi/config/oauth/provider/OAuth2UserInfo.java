@@ -1,8 +1,5 @@
 package com.withtaxi.taxi.config.oauth.provider;
 
-import java.util.Map;
-
-
 public interface OAuth2UserInfo {
     /*
         구글의 경우 getAttributes에서 sub가 providerId

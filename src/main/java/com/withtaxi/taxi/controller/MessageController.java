@@ -2,7 +2,6 @@ package com.withtaxi.taxi.controller;
 
 
 import com.withtaxi.taxi.model.ChatMessage;
-import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.service.ChatService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
