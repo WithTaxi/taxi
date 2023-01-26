@@ -4,6 +4,7 @@ import com.withtaxi.taxi.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("api/email")
 @RequiredArgsConstructor

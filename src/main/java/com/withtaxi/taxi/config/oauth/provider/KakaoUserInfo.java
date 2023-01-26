@@ -2,6 +2,7 @@ package com.withtaxi.taxi.config.oauth.provider;
 
 import java.util.Map;
 
+
 public class KakaoUserInfo implements OAuth2UserInfo{
 
     private Map<String, Object> attributes;

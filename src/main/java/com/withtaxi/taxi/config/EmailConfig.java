@@ -12,6 +12,7 @@ import java.util.Properties;
 public class EmailConfig {
 
 
+
     @Bean
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();

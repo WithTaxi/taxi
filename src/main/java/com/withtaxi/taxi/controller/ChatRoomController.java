@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+// 제발
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/chat")
@@ -51,5 +51,18 @@ public class ChatRoomController {
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId) {
         return chatService.findById(roomId);
+    }
+
+    // 특정 채팅방 정보
+    @GetMapping("/rooms/{roomId}")
+    @ResponseBody
+    public ChatRoom roomFind(@PathVariable String roomId){
+        return chatService.findByRoomId(roomId);
+    }
+
+    // 채팅방 삭제
+    @GetMapping("/room/delete/{roomId}")
+    public void deleteRoom(@PathVariable String roomId){
+        chatService.deleteRoom(roomId);
     }
 }

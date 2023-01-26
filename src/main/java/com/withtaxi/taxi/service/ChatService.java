@@ -2,6 +2,7 @@ package com.withtaxi.taxi.service;
 
 import com.withtaxi.taxi.model.ChatRoom;
 import com.withtaxi.taxi.repository.ChatRepository;
+import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -10,11 +11,13 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.*;
 
+
 @Repository
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ChatService {
+    private final UserRepository userRepository;
 
     private Map<String, ChatRoom> chatRooms;
     private final ChatRepository chatRepository;
@@ -30,6 +33,17 @@ public class ChatService {
         ChatRoom chatRoom = new ChatRoom().create(name);
         chatRooms.put(chatRoom.getRoomId(), chatRoom);
         return chatRepository.save(chatRoom);
+    }
+    // jpa 채팅방 찾기
+    public ChatRoom findByRoomId(String roomId){
+        return chatRepository.findByRoomId(roomId);
+    }
+
+    // 채팅방 삭제
+    public void deleteRoom(String roomId){
+        ChatRoom chatRoom = chatRepository.findByRoomId(roomId);
+        chatRooms.remove(roomId);
+        chatRepository.delete(chatRoom);
     }
 
     //채팅방 조회
@@ -58,11 +72,8 @@ public class ChatService {
     public ChatRoom findById(String roomId) {
         return chatRooms.get(roomId);
     }
-    // 임시 채팅방 찾기
-    public ChatRoom findRoom(String name){
-        return chatRooms.get(name);
-    }
 
+    //
     public String addUser(String roomId, String userName){
         ChatRoom room = chatRooms.get(roomId);
         String userUUID = UUID.randomUUID().toString();
@@ -74,8 +85,8 @@ public class ChatService {
     public void delUser(String roomId, String userUUID){
         ChatRoom room = chatRooms.get(roomId);
         room.getUserlist().remove(userUUID);
-
     }
+
     public String getUserName(String roomId, String userUUID){
         ChatRoom room = chatRooms.get(roomId);
         return room.getUserlist().get(userUUID);

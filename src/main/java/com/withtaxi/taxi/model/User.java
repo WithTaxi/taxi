@@ -6,17 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
+
 @Builder
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class User {
-    public enum MessageType{
-        ENTER, TALK, LEAVE
-    }
     @Id
     private String userId;
     private String password;
@@ -31,14 +28,11 @@ public class User {
     private String provider; // sns 종류
     private String providerId; // sns 아이디
 
-    private MessageType type; // 메세지 타입
-    private String roomId;    //채팅방 ID
-    private String message; // 메세지 내용
-    private String sender;
 
 
-//    @CreationTimestamp 복구 예정
-//    private Timestamp createDate; // 회원가입 날짜
+
+    @CreationTimestamp
+    private Timestamp createDate; // 회원가입 날짜
 
     @Builder
     public User(String userId,
@@ -51,8 +45,8 @@ public class User {
                 String email,
                 String university,
                 String provider,
-                String providerId){
-// 복구예정               Timestamp createDate) {
+                String providerId,
+              Timestamp createDate) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -64,7 +58,7 @@ public class User {
         this.university = university;
         this.provider = provider;
         this.providerId = providerId;
-//        this.createDate = createDate; 복구예정
+        this.createDate = createDate;
     }
 }
 

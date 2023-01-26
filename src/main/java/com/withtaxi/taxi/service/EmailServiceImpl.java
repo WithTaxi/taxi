@@ -14,6 +14,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Random;
 
+
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService{
