@@ -14,5 +14,9 @@ public interface UserService {
     User findId(String name, String email);
 
     void removeUser(String userId);
+
+    String findEmail(String userId);
+
+    void updatePassword(String userId);
 }
 

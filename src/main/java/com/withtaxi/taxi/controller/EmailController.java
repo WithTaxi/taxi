@@ -2,12 +2,11 @@ package com.withtaxi.taxi.controller;
 
 import com.withtaxi.taxi.service.EmailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("api/join/email")
+@RequestMapping("api/email")
 @RequiredArgsConstructor
 public class EmailController {
 
@@ -18,5 +17,10 @@ public class EmailController {
         String code = emailService.sendSimpleMessage(email);
 
         return code;
+    }
+
+    @PostMapping("/issueTemporaryPassword")
+    int issueTemporaryPassword(@RequestParam("userId") String userId) throws Exception {
+        return emailService.issuedTemporaryPassword(userId);
     }
 }

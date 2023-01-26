@@ -4,6 +4,7 @@ import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user")
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -48,7 +50,6 @@ public class UserController {
      * @param user
      * @return
      */
-
     @PostMapping("/findId")
     public String findId(@RequestBody User user) {
         String name = user.getName();
@@ -61,4 +62,11 @@ public class UserController {
             return "존재하지 않는 회원 정보입니다.";
         }
     }
+
+    /***
+     * 01/26 할일 비밀번호 변경!
+     */
+//    @PutMapping("/changePassword")
+//    public String changePassword(@) {
+//    }
 }
