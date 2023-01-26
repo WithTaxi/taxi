@@ -1,9 +1,12 @@
 package com.withtaxi.taxi.service;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.withtaxi.taxi.model.User;
+import com.withtaxi.taxi.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
@@ -12,10 +15,13 @@ import javax.mail.internet.MimeMessage;
 import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService{
 
-    @Autowired
-    JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     public static String ePw = null;
 
@@ -48,6 +54,10 @@ public class EmailServiceImpl implements EmailService{
         return message;
     }
 
+    /***
+     * 인증번호 구현 createkey()
+     * @return
+     */
     public static String createKey() {
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
@@ -85,5 +95,27 @@ public class EmailServiceImpl implements EmailService{
         }
 
         return ePw;
+    }
+
+    @Override
+    public int issuedTemporaryPassword(String userId) {
+        User user = userRepository.findByUserId(userId);
+
+        if (user == null) {
+            return 0;
+        }
+
+        try {
+            String temporaryPassword = sendSimpleMessage(user.getEmail());
+
+            String encPassword = passwordEncoder.encode(temporaryPassword);
+            user.setPassword(encPassword);
+
+            userRepository.save(user);
+
+            return 1;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
