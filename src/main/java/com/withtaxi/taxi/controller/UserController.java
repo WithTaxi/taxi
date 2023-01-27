@@ -102,6 +102,8 @@ public class UserController {
      * @param principalDetails
      * @return 닉네임, 모바일, 이메일, 학교 변경
      *         변경 완료시 1 반환
+     *         +
+     *         httpStatus 200
      */
     @PutMapping("/modifyUserInfo")
     public ResponseEntity<Integer> modifyUserInfo(@RequestBody User user, @AuthenticationPrincipal PrincipalDetails principalDetails) {
