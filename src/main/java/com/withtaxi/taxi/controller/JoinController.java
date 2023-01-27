@@ -23,11 +23,25 @@ public class JoinController {
         return joinService.registerUser(user);
     }
 
+    /***
+     * 아이디 중복체크
+     * @param userId
+     * @return true : 중복 있음
+     *         false : 중복 없음
+     * @return httpStatus 200 ok
+     */
     @GetMapping("/user-id/{userId}/dup")
     public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String userId) {
         return ResponseEntity.ok(joinService.checkUserIdDuplicate(userId));
     }
 
+    /***
+     * 닉네임 중복체크
+     * @param nickName
+     * @return true : 중복 있음
+     *         false : 중복 없음
+     * @return httpStatus 200 ok
+     */
     @GetMapping("/user-nickname/{nickName}/dup")
     public ResponseEntity<Boolean> checkNickNameDuplicate(@PathVariable String nickName) {
         return ResponseEntity.ok(joinService.checkNickNameDuplicate(nickName));

@@ -16,10 +16,11 @@ public interface UserService {
 
     void removeUser(String userId);
 
-    String findEmail(String userId);
 
     int checkPassword(String password, PrincipalDetails principalDetails);
 
     int modifyUserPassword(String password, PrincipalDetails principalDetails);
+
+    int modifyUserInformation(PrincipalDetails principalDetails, User user);
 }
 

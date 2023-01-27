@@ -39,25 +39,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String findEmail(String userId) {
-        User user = userRepository.findByUserId(userId);
-        return user.getEmail();
-    }
-
-    /***
-     * 비밀번호 변경 전 비밀번호 확인작업, 일치하면 1 불일치면 0 반환
-     * @param password
-     * @param principalDetails
-     * @return
-     */
-    @Override
     public int checkPassword(String password, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         String reqPassword = password;
 
         if (!passwordEncoder.matches(reqPassword, principalDetails.getPassword())) {
             return 0;
         }
-
         return 1;
     }
 
@@ -70,8 +57,20 @@ public class UserServiceImpl implements UserService{
         String encPassword = passwordEncoder.encode(password);
         user.setPassword(encPassword);
 
-
         userRepository.save(user);
+
+        return 1;
+    }
+    @Override
+    public int modifyUserInformation(@AuthenticationPrincipal PrincipalDetails principalDetails, User user) {
+        User modifyUser = principalDetails.getUser();
+
+        modifyUser.setNickName(user.getNickName());
+        modifyUser.setMobile(user.getMobile());
+        modifyUser.setEmail(user.getEmail());
+        modifyUser.setUniversity(user.getUniversity());
+
+        userRepository.save(modifyUser);
 
         return 1;
     }
