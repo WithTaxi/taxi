@@ -44,12 +44,6 @@ public class UserServiceImpl implements UserService{
         return user.getEmail();
     }
 
-    /***
-     * 비밀번호 변경 전 비밀번호 확인작업, 일치하면 1 불일치면 0 반환
-     * @param password
-     * @param principalDetails
-     * @return
-     */
     @Override
     public int checkPassword(String password, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         String reqPassword = password;
@@ -57,7 +51,6 @@ public class UserServiceImpl implements UserService{
         if (!passwordEncoder.matches(reqPassword, principalDetails.getPassword())) {
             return 0;
         }
-
         return 1;
     }
 

@@ -49,10 +49,10 @@ public class UserController {
     }
 
     /***
-     * 아이디 찾기 API
-     * 없는 아이디였으면 "존재하지 않는 회원 정보입니다 "
+     * 아이디 찾기
      * @param user
-     * @return
+     * @return 일치하는 아이디가 있으면 아이디 반환
+     *         일치하는 아이디가 없으면 NPE
      */
     @PostMapping("/findId")
     public String findId(@RequestBody User user) {
@@ -67,11 +67,28 @@ public class UserController {
         }
     }
 
+    /***
+     * 비밀번호 재확인
+     * @param passwordMap
+     * @param principalDetails
+     * @return 비밀번호 일치시 1
+     *         비밀번호 불일치시 0 반환
+     *         +
+     *         httpStatus 200 ok 반환
+     */
     @GetMapping("/checkPassword")
     public ResponseEntity<Integer> checkPassword(@RequestBody Map<String, String> passwordMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         return new ResponseEntity(userService.checkPassword(passwordMap.get("password"), principalDetails), HttpStatus.OK);
     }
 
+    /***
+     * 비밀번호 수정
+     * @param passwordMap
+     * @param principalDetails
+     * @return 비밀번호 변경 후 1 반환
+     *         +
+     *         httpStatus 200 ok 반환
+     */
     @PutMapping("/modifyPassword")
     public ResponseEntity<Integer> modifyPassword(@RequestBody Map<String, String> passwordMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
