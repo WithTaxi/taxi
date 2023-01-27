@@ -5,7 +5,6 @@ import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,10 +34,6 @@ public class UserController {
         return principalDetails.getUser();
     }
 
-//    @PutMapping("/{userId}")
-//    public void modifyUser(@PathVariable String userId, @RequestBody User user) {
-//        userService.modifyUser(userId, user);
-//    }
 
     /***
      * 회원 탈퇴 API
