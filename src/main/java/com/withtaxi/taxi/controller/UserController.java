@@ -5,6 +5,7 @@ import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -93,5 +94,17 @@ public class UserController {
     public ResponseEntity<Integer> modifyPassword(@RequestBody Map<String, String> passwordMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         return new ResponseEntity(userService.modifyUserPassword(passwordMap.get("password"), principalDetails), HttpStatus.OK);
+    }
+
+    /***
+     * 회원정보 수정
+     * @param user
+     * @param principalDetails
+     * @return 닉네임, 모바일, 이메일, 학교 변경
+     *         변경 완료시 1 반환
+     */
+    @PutMapping("/modifyUserInfo")
+    public ResponseEntity<Integer> modifyUserInfo(@RequestBody User user, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        return new ResponseEntity(userService.modifyUserInformation(principalDetails, user), HttpStatus.OK);
     }
 }

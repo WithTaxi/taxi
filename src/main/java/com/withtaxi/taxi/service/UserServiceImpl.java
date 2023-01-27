@@ -39,12 +39,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String findEmail(String userId) {
-        User user = userRepository.findByUserId(userId);
-        return user.getEmail();
-    }
-
-    @Override
     public int checkPassword(String password, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         String reqPassword = password;
 
@@ -63,8 +57,20 @@ public class UserServiceImpl implements UserService{
         String encPassword = passwordEncoder.encode(password);
         user.setPassword(encPassword);
 
-
         userRepository.save(user);
+
+        return 1;
+    }
+    @Override
+    public int modifyUserInformation(@AuthenticationPrincipal PrincipalDetails principalDetails, User user) {
+        User modifyUser = principalDetails.getUser();
+
+        modifyUser.setNickName(user.getNickName());
+        modifyUser.setMobile(user.getMobile());
+        modifyUser.setEmail(user.getEmail());
+        modifyUser.setUniversity(user.getUniversity());
+
+        userRepository.save(modifyUser);
 
         return 1;
     }
