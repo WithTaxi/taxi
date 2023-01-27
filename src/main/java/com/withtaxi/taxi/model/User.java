@@ -30,7 +30,6 @@ public class User {
 
 
 
-
     @CreationTimestamp
     private Timestamp createDate; // 회원가입 날짜
 

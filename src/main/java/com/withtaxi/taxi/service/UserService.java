@@ -1,6 +1,7 @@
 package com.withtaxi.taxi.service;
 
 
+import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.model.User;
 
 public interface UserService {
@@ -17,6 +18,8 @@ public interface UserService {
 
     String findEmail(String userId);
 
-    void updatePassword(String userId);
+    int checkPassword(String password, PrincipalDetails principalDetails);
+
+    int modifyUserPassword(String password, PrincipalDetails principalDetails);
 }
 

@@ -5,8 +5,12 @@ import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * User 관련 Controller
@@ -63,10 +67,14 @@ public class UserController {
         }
     }
 
-    /***
-     * 01/26 할일 비밀번호 변경!
-     */
-//    @PutMapping("/changePassword")
-//    public String changePassword(@) {
-//    }
+    @GetMapping("/checkPassword")
+    public ResponseEntity<Integer> checkPassword(@RequestBody Map<String, String> passwordMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        return new ResponseEntity(userService.checkPassword(passwordMap.get("password"), principalDetails), HttpStatus.OK);
+    }
+
+    @PutMapping("/modifyPassword")
+    public ResponseEntity<Integer> modifyPassword(@RequestBody Map<String, String> passwordMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        return new ResponseEntity(userService.modifyUserPassword(passwordMap.get("password"), principalDetails), HttpStatus.OK);
+    }
 }

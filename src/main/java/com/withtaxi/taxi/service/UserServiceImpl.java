@@ -1,14 +1,18 @@
 package com.withtaxi.taxi.service;
 
+import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
@@ -40,14 +44,35 @@ public class UserServiceImpl implements UserService{
         return user.getEmail();
     }
 
+    /***
+     * 비밀번호 변경 전 비밀번호 확인작업, 일치하면 1 불일치면 0 반환
+     * @param password
+     * @param principalDetails
+     * @return
+     */
     @Override
-    public void updatePassword(String userId) {
-        User user = userRepository.findByUserId(userId);
-        String rawPassword = user.getPassword();
+    public int checkPassword(String password, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        String reqPassword = password;
 
-        String encPassword = passwordEncoder.encode(rawPassword);
+        if (!passwordEncoder.matches(reqPassword, principalDetails.getPassword())) {
+            return 0;
+        }
+
+        return 1;
+    }
+
+    @Override
+    @Transactional
+    public int modifyUserPassword(String password, PrincipalDetails principalDetails) {
+
+        User user = principalDetails.getUser();
+
+        String encPassword = passwordEncoder.encode(password);
         user.setPassword(encPassword);
 
+
         userRepository.save(user);
+
+        return 1;
     }
 }
