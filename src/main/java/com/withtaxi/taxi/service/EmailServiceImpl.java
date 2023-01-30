@@ -1,6 +1,7 @@
 package com.withtaxi.taxi.service;
 
 
+import com.withtaxi.taxi.message.EmailMessage;
 import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,25 +27,56 @@ public class EmailServiceImpl implements EmailService{
 
     public static String ePw = null;
 
-    private MimeMessage createMessage(String to) throws Exception {
+    private MimeMessage createAuthenticationNumberMessage(String to) throws Exception {
         ePw = createKey();
         System.out.println("보내는 대상 : " + to);
-        System.out.println("인증 번호 : " + ePw);
+        System.out.println(EmailMessage.AUTHENTICATION_NUMBER.getEmailMessage() + " : " + ePw);
         MimeMessage message = javaMailSender.createMimeMessage();
 
         message.addRecipients(Message.RecipientType.TO, to); // 보내는 대상
-        message.setSubject("WithTaxi 대학교 인증 메일입니다");
+        message.setSubject("WithTaxi " + EmailMessage.AUTHENTICATION_NUMBER.getEmailMessage() + " 메일입니다");
 
         String msgg = "";
         msgg+= "<div style='margin:100px;'>";
         msgg+= "<h1> 안녕하세요 WithTaxi 입니다. </h1>";
         msgg+= "<br>";
-        msgg+= "<p>아래 코드를 회원가입 창으로 돌아가 입력해주세요<p>";
+        msgg+= "<p>아래 코드를 " + EmailMessage.SIGN_UP_CODE.getEmailMessage() + " 창으로 돌아가 입력해주세요<p>";
         msgg+= "<br>";
         msgg+= "<p>감사합니다!<p>";
         msgg+= "<br>";
-        msgg+= "<div align='center' style='border:1px solid black; font-family:verdana';>";
-        msgg+= "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
+        msgg+= "<div align='center' style='border:1px solid black; f" +
+                "ont-family:verdana';>";
+        msgg+= "<h3 style='color:blue;'>" + EmailMessage.SIGN_UP_CODE.getEmailMessage() + " " + EmailMessage.AUTHENTICATION_NUMBER.getEmailMessage() + "입니다.</h3>";
+        msgg+= "<div style='font-size:130%'>";
+        msgg+= "CODE : <strong>";
+        msgg+= ePw+"</strong><div><br/> ";
+        msgg+= "</div>";
+        message.setText(msgg, "utf-8", "html");//내용
+        message.setFrom(new InternetAddress("kkm23125291@gmail.com","WithTaxi")); //보내는 사람
+
+        return message;
+    }
+
+    private MimeMessage createTemporaryNumberMessage(String to) throws Exception {
+        ePw = createKey();
+        System.out.println("보내는 대상 : " + to);
+        System.out.println(EmailMessage.TEMPORARY_PASSWORD_MESSAGE.getEmailMessage() + " : " + ePw);
+        MimeMessage message = javaMailSender.createMimeMessage();
+
+        message.addRecipients(Message.RecipientType.TO, to); // 보내는 대상
+        message.setSubject("WithTaxi " + EmailMessage.TEMPORARY_PASSWORD_MESSAGE.getEmailMessage() + " 메일입니다");
+
+        String msgg = "";
+        msgg+= "<div style='margin:100px;'>";
+        msgg+= "<h1> 안녕하세요 WithTaxi 입니다. </h1>";
+        msgg+= "<br>";
+        msgg+= "<p>아래 코드를 " + EmailMessage.LOGIN_CODE.getEmailMessage() + " 창으로 돌아가 입력해주세요<p>";
+        msgg+= "<br>";
+        msgg+= "<p>감사합니다!<p>";
+        msgg+= "<br>";
+        msgg+= "<div align='center' style='border:1px solid black; f" +
+                "ont-family:verdana';>";
+        msgg+= "<h3 style='color:blue;'>" + EmailMessage.LOGIN_CODE.getEmailMessage() + " " + EmailMessage.TEMPORARY_PASSWORD_MESSAGE.getEmailMessage() + "입니다.</h3>";
         msgg+= "<div style='font-size:130%'>";
         msgg+= "CODE : <strong>";
         msgg+= ePw+"</strong><div><br/> ";
@@ -64,7 +96,7 @@ public class EmailServiceImpl implements EmailService{
         Random rnd = new Random();
 
         for (int i = 0; i < 8; i++) { // 인증코드 8자리
-            int index = rnd.nextInt(3); // 0~2 까지 랜덤
+            int index = rnd.nextInt(4); // 0~3 까지 랜덤
 
             switch (index) {
                 case 0:
@@ -79,6 +111,11 @@ public class EmailServiceImpl implements EmailService{
                     key.append((rnd.nextInt(10)));
                     // 0~9
                     break;
+                case 3:
+                    char[] charSet = new char[]{
+                            '!', '@', '#', '$', '%', '*'};
+
+                    key.append(charSet[rnd.nextInt(6)]);
             }
         }
 
@@ -87,7 +124,20 @@ public class EmailServiceImpl implements EmailService{
 
     @Override
     public String sendSimpleMessage(String to) throws Exception {
-        MimeMessage message = createMessage(to);
+        MimeMessage message = createAuthenticationNumberMessage(to);
+        try {
+            javaMailSender.send(message);
+        } catch (MailException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
+        }
+
+        return ePw;
+    }
+
+    @Override
+    public String sendPasswordMessage(String to) throws Exception {
+        MimeMessage message = createTemporaryNumberMessage(to);
         try {
             javaMailSender.send(message);
         } catch (MailException e) {
@@ -107,7 +157,7 @@ public class EmailServiceImpl implements EmailService{
         }
 
         try {
-            String temporaryPassword = sendSimpleMessage(user.getEmail());
+            String temporaryPassword = sendPasswordMessage(user.getEmail());
 
             String encPassword = passwordEncoder.encode(temporaryPassword);
             user.setPassword(encPassword);
