@@ -47,12 +47,8 @@ public class ChatService {
     }
 
     //채팅방 조회
-    public List<ChatRoom> findAllRoom() {
-        //채팅방 최근 생성 순으로 반환
-        List<ChatRoom> result = new ArrayList<>(chatRooms.values());
-        Collections.reverse(result);
-
-        return result;
+    public List<ChatRoom> findAllRoom(){
+        return chatRepository.findAll();
     }
 
     // 인원 +1
