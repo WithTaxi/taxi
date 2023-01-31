@@ -1,5 +1,6 @@
 package com.withtaxi.taxi.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,14 +11,18 @@ import java.util.Properties;
 @Configuration
 public class EmailConfig {
 
+    @Value("${email.id}")
+    private String id;
 
+    @Value("${email.password}")
+    private String password;
 
     @Bean
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.gmail.com");
-        javaMailSender.setUsername("kkm23125291@gmail.com");
-        javaMailSender.setPassword("gxnqegfeecujiouy");
+        javaMailSender.setUsername(id);
+        javaMailSender.setPassword(password);
         javaMailSender.setPort(465);
         javaMailSender.setJavaMailProperties(getMailProperties());
         javaMailSender.setDefaultEncoding("UTF-8");
