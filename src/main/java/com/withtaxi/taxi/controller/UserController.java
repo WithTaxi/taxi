@@ -36,8 +36,9 @@ public class UserController {
 
 
     /***
-     * 회원 탈퇴 API
+     * 회원탈퇴
      * @param principalDetails
+     * @return 회원탈퇴시 1 반환
      */
     @DeleteMapping("/withdrawal")
     public int removeUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
