@@ -36,12 +36,13 @@ public class UserController {
 
 
     /***
-     * 회원 탈퇴 API
-     * @param userId
+     * 회원탈퇴
+     * @param principalDetails
+     * @return 회원탈퇴시 1 반환
      */
-    @DeleteMapping("/{userId}")
-    public void removeUser(@PathVariable String userId) {
-        userService.removeUser(userId);
+    @DeleteMapping("/withdrawal")
+    public int removeUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        return userService.removeUser(principalDetails.getUsername());
     }
 
     /***
@@ -72,7 +73,7 @@ public class UserController {
      *         +
      *         httpStatus 200 ok 반환
      */
-    @GetMapping("/checkPassword")
+    @PostMapping("/checkPassword")
     public ResponseEntity<Integer> checkPassword(@RequestBody Map<String, String> passwordMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         return new ResponseEntity(userService.checkPassword(passwordMap.get("password"), principalDetails), HttpStatus.OK);
     }
