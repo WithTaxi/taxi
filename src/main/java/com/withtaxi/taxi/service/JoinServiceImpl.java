@@ -19,6 +19,7 @@ public class JoinServiceImpl implements JoinService{
         String rawPassword = user.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
+        user.setRole("USER");
         return userRepository.save(user);
     }
 
