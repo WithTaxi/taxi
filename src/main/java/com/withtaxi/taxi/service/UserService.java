@@ -14,7 +14,7 @@ public interface UserService {
      */
     User findId(String name, String email);
 
-    void removeUser(String userId);
+    int removeUser(String userId);
 
 
     int checkPassword(String password, PrincipalDetails principalDetails);
