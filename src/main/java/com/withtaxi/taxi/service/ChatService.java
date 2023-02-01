@@ -12,12 +12,9 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 
-@Repository
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class ChatService {
-    private final UserRepository userRepository;
 
     private Map<String, ChatRoom> chatRooms;
     private final ChatRepository chatRepository;
@@ -31,7 +28,7 @@ public class ChatService {
     //채팅방 생성
     public ChatRoom createRoom(String name) {
         ChatRoom chatRoom = new ChatRoom().create(name);
-        chatRooms.put(chatRoom.getRoomId(), chatRoom);
+//        chatRooms.put(chatRoom.getRoomId(), chatRoom);
         return chatRepository.save(chatRoom);
     }
     // jpa 채팅방 찾기
@@ -42,7 +39,7 @@ public class ChatService {
     // 채팅방 삭제
     public void deleteRoom(String roomId){
         ChatRoom chatRoom = chatRepository.findByRoomId(roomId);
-        chatRooms.remove(roomId);
+//        chatRooms.remove(roomId);
         chatRepository.delete(chatRoom);
     }
 
