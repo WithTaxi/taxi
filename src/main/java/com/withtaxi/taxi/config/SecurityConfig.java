@@ -24,7 +24,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors();
         http.authorizeHttpRequests()
-                .antMatchers("/user/**").hasAnyRole("USER")
+                .antMatchers("/api/**").hasAnyRole("USER")
+                .antMatchers("/chat/**").hasAnyRole("USER")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin().disable()
