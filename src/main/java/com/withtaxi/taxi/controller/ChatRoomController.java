@@ -46,13 +46,6 @@ public class ChatRoomController {
     }
 
 
-    // 특정 채팅방 조회
-    @GetMapping("/room/{roomId}")
-    @ResponseBody
-    public ChatRoom roomInfo(@PathVariable String roomId) {
-        return chatService.findById(roomId);
-    }
-
     // 특정 채팅방 정보
     @GetMapping("/rooms/{roomId}")
     @ResponseBody

@@ -39,6 +39,7 @@ public class MessageController {
             headerAccessor.getSessionAttributes().put("userUUID",userUUID);
             headerAccessor.getSessionAttributes().put("roomId",chat.getRoomId());
             chat.setMessage(chat.getSender() + " 님이 입장하셨습니다");
+            chat.setSender("[알림]");
         }
         sendingOperations.convertAndSend("/topic/chat/room/"+chat.getRoomId(),chat);
     }
