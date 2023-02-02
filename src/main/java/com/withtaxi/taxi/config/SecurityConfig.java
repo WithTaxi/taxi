@@ -24,8 +24,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors();
         http.authorizeHttpRequests()
-                .antMatchers("/user/**").hasAnyRole("USER")
-                .anyRequest().permitAll()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin().disable()
                 .addFilterBefore(jsonUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
