@@ -46,4 +46,18 @@ public class JoinController {
     public ResponseEntity<Boolean> checkNickNameDuplicate(@PathVariable String nickName) {
         return ResponseEntity.ok(joinService.checkNickNameDuplicate(nickName));
     }
+
+
+    /***
+     * 이메일 중복체크
+     * @param email
+     * @return true : 중복 있음
+     *         false : 중복 없음
+     * @return httpStatus 200 ok
+     */
+    @GetMapping("/user-email/{email}/dup")
+    public ResponseEntity<Boolean> checkEmailDuplicate(@PathVariable String email) {
+        return ResponseEntity.ok(joinService.checkEmailDuplicate(email));
+    }
+
 }

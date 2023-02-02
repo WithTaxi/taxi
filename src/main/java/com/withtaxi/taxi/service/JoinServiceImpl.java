@@ -19,6 +19,7 @@ public class JoinServiceImpl implements JoinService{
         String rawPassword = user.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
+        user.setRole("USER");
         return userRepository.save(user);
     }
 
@@ -30,5 +31,10 @@ public class JoinServiceImpl implements JoinService{
     @Override
     public boolean checkNickNameDuplicate(String nickName) {
         return userRepository.existsByNickName(nickName);
+    }
+
+    @Override
+    public boolean checkEmailDuplicate(String email) {
+        return userRepository.existsByEmail(email);
     }
 }
