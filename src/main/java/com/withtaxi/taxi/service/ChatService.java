@@ -16,19 +16,11 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ChatService {
 
-    private Map<String, ChatRoom> chatRooms;
     private final ChatRepository chatRepository;
 
-
-    @PostConstruct
-    //의존관게 주입완료되면 실행되는 코드
-    private void init() {
-        chatRooms = new LinkedHashMap<>();
-    }
     //채팅방 생성
     public ChatRoom createRoom(String name) {
         ChatRoom chatRoom = new ChatRoom().create(name);
-//        chatRooms.put(chatRoom.getRoomId(), chatRoom);
         return chatRepository.save(chatRoom);
     }
     // jpa 채팅방 찾기
@@ -39,7 +31,6 @@ public class ChatService {
     // 채팅방 삭제
     public void deleteRoom(String roomId){
         ChatRoom chatRoom = chatRepository.findByRoomId(roomId);
-//        chatRooms.remove(roomId);
         chatRepository.delete(chatRoom);
     }
 
@@ -48,40 +39,36 @@ public class ChatService {
         return chatRepository.findAll();
     }
 
-    // 인원 +1
-    public void plusUserCnt(String roomId) {
-        ChatRoom room = chatRooms.get(roomId);
-        room.setUserCount(room.getUserCount()+1);
-        System.out.println("room Id: "+ roomId +" 서비스 유저 수: "+room.getUserCount()); // test 용도
-
+    //사용자 수 증가
+    public void increaseUserCount(String roomId) {
+        ChatRoom room = chatRepository.findByRoomId(roomId);
+        room.setUserCount(room.getUserCount() + 1);
+        chatRepository.save(room);
     }
-    // 인원 -1
-    public void minusUserCnt(String roomId) {
-        ChatRoom room = chatRooms.get(roomId);
-        room.setUserCount(room.getUserCount()-1);
-    }
-
-    //채팅방 하나 불러오기
-    public ChatRoom findById(String roomId) {
-        return chatRooms.get(roomId);
+    //사용자 수 감소
+    public void decreaseUserCount(String roomId) {
+        ChatRoom room = chatRepository.findByRoomId(roomId);
+        room.setUserCount(room.getUserCount() - 1);
+        chatRepository.save(room);
     }
 
-    //
+    // 사용자 목록에 사용자 추가
     public String addUser(String roomId, String userName){
-        ChatRoom room = chatRooms.get(roomId);
+        ChatRoom room = chatRepository.findByRoomId(roomId);
         String userUUID = UUID.randomUUID().toString();
-
         room.getUserlist().put(userUUID,userName);
         return userUUID;
     }
-
+    // 사용자 목록에서 사용자 삭제
     public void delUser(String roomId, String userUUID){
-        ChatRoom room = chatRooms.get(roomId);
+        ChatRoom room = chatRepository.findByRoomId(roomId);
         room.getUserlist().remove(userUUID);
-    }
+        System.out.println(room.getUserlist().size());
 
+    }
+    // 사용자 검색
     public String getUserName(String roomId, String userUUID){
-        ChatRoom room = chatRooms.get(roomId);
+        ChatRoom room = chatRepository.findByRoomId(roomId);
         return room.getUserlist().get(userUUID);
     }
 

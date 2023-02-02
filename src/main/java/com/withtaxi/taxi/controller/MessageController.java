@@ -33,13 +33,13 @@ public class MessageController {
 
 
         if (ChatMessage.MessageType.ENTER.equals(chat.getType())) {
-            service.plusUserCnt(chat.getRoomId());
+
             String userUUID = service.addUser(chat.getRoomId(), chat.getSender());
+            service.increaseUserCount(chat.getRoomId());
 
             headerAccessor.getSessionAttributes().put("userUUID",userUUID);
             headerAccessor.getSessionAttributes().put("roomId",chat.getRoomId());
             chat.setMessage(chat.getSender() + " 님이 입장하셨습니다");
-            chat.setSender("[알림]");
         }
         sendingOperations.convertAndSend("/topic/chat/room/"+chat.getRoomId(),chat);
     }
@@ -53,9 +53,10 @@ public class MessageController {
         String userUUID = (String) headerAccessor.getSessionAttributes().get("userUUID");
         String roomId = (String) headerAccessor.getSessionAttributes().get("roomId");
 
-        service.minusUserCnt(roomId);
+
         String username = service.getUserName(roomId,userUUID);
         service.delUser(roomId, userUUID);
+        service.decreaseUserCount(roomId);
 
         if (username != null ){
             ChatMessage chatMessage = ChatMessage.builder()
