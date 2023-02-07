@@ -19,8 +19,8 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
     //채팅방 생성
-    public ChatRoom createRoom(String name) {
-        ChatRoom chatRoom = new ChatRoom().create(name);
+    public ChatRoom createRoom(String name,String host) {
+        ChatRoom chatRoom = new ChatRoom().create(name,host);
         return chatRepository.save(chatRoom);
     }
     // jpa 채팅방 찾기
@@ -42,34 +42,55 @@ public class ChatService {
     //사용자 수 증가
     public void increaseUserCount(String roomId) {
         ChatRoom room = chatRepository.findByRoomId(roomId);
-        room.setUserCount(room.getUserCount() + 1);
-        chatRepository.save(room);
+        if (room != null) {
+            room.setUserCount(room.getUserCount() + 1);
+            chatRepository.save(room);
+        } else {
+            System.out.println(" ");
+        }
     }
     //사용자 수 감소
     public void decreaseUserCount(String roomId) {
         ChatRoom room = chatRepository.findByRoomId(roomId);
-        room.setUserCount(room.getUserCount() - 1);
-        chatRepository.save(room);
+        if (room != null) {
+            room.setUserCount(room.getUserCount() - 1);
+            chatRepository.save(room);
+        } else {
+            System.out.println(" ");
+        }
+
     }
 
     // 사용자 목록에 사용자 추가
-    public String addUser(String roomId, String userName){
+    public String addUser(String roomId, String userName) {
         ChatRoom room = chatRepository.findByRoomId(roomId);
-        String userUUID = UUID.randomUUID().toString();
-        room.getUserlist().put(userUUID,userName);
-        return userUUID;
+        if (room != null) {
+            String userUUID = UUID.randomUUID().toString();
+            room.getUserlist().put(userUUID, userName);
+            return userUUID;
+        } else {
+             return roomId;
+        }
     }
-    // 사용자 목록에서 사용자 삭제
-    public void delUser(String roomId, String userUUID){
-        ChatRoom room = chatRepository.findByRoomId(roomId);
-        room.getUserlist().remove(userUUID);
-        System.out.println(room.getUserlist().size());
 
+    // 사용자 목록에서 사용자 삭제
+    public void removeUser(String roomId, String userUUID){
+        ChatRoom room = chatRepository.findByRoomId(roomId);
+        if(room != null){
+            room.getUserlist().remove(userUUID);
+        }
     }
     // 사용자 검색
     public String getUserName(String roomId, String userUUID){
         ChatRoom room = chatRepository.findByRoomId(roomId);
-        return room.getUserlist().get(userUUID);
+        if (room == null) {
+            return null;
+        }
+        Map<String, String> userlist = room.getUserlist();
+        if (userlist == null || !userlist.containsKey(userUUID)) {
+            return null;
+        }
+        return userlist.get(userUUID);
     }
 
 }
