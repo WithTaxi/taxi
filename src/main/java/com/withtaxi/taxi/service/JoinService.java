@@ -10,4 +10,6 @@ public interface JoinService {
     boolean checkUserIdDuplicate(String userId);
 
     boolean checkNickNameDuplicate(String nickName);
+
+    boolean checkEmailDuplicate(String email);
 }
