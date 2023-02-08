@@ -1,6 +1,7 @@
 package com.withtaxi.taxi.service;
 
 import com.withtaxi.taxi.model.ChatRoom;
+import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.repository.ChatRepository;
 import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,12 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
     //채팅방 생성
-    public ChatRoom createRoom(String name,String host) {
-        ChatRoom chatRoom = new ChatRoom().create(name,host);
+    public ChatRoom createRoom(String name,String userId) {
+        ChatRoom chatRoom = new ChatRoom().create(name,userId);
         return chatRepository.save(chatRoom);
     }
+
+
     // jpa 채팅방 찾기
     public ChatRoom findByRoomId(String roomId){
         return chatRepository.findByRoomId(roomId);
@@ -60,6 +63,7 @@ public class ChatService {
         }
 
     }
+
 
     // 사용자 목록에 사용자 추가
     public String addUser(String roomId, String userName) {
