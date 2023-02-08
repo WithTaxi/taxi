@@ -1,15 +1,19 @@
 package com.withtaxi.taxi.controller;
 
 import com.withtaxi.taxi.model.ChatRoom;
+import com.withtaxi.taxi.model.User;
+import com.withtaxi.taxi.repository.UserRepository;
 import com.withtaxi.taxi.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.converter.MessageConversionException;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 // 제발
 @Controller
@@ -19,6 +23,8 @@ public class ChatRoomController {
 
     @Autowired
     private final ChatService chatService;
+    private final UserRepository userRepository;
+
 
     // 채팅 리스트 화면
     @GetMapping("/room")
@@ -36,8 +42,8 @@ public class ChatRoomController {
     // 채팅방 생성
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name) {
-        return chatService.createRoom(name);
+    public ChatRoom createRoom(@RequestParam String name, Principal principal) {
+        return chatService.createRoom(name, principal.getName());
     }
 
     // 채팅방 입장 화면
