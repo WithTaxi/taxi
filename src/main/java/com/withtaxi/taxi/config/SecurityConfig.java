@@ -1,12 +1,15 @@
 package com.withtaxi.taxi.config;
 
 import com.withtaxi.taxi.config.oauth.PrincipalOauth2UserService;
-import com.withtaxi.taxi.filter.JsonUsernamePasswordAuthenticationFilter;
+import com.withtaxi.taxi.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -17,26 +20,35 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final PrincipalOauth2UserService principalOauth2UserService;
-    private final JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter;
 
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors();
-        http.authorizeHttpRequests()
-                .antMatchers("/user/**").permitAll()
-                .anyRequest().permitAll()
+
+        http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()
-                .addFilterBefore(jsonUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic().disable()
+                .apply(new MyCustomDsl())
+                .and()
+                // oauth설정
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService);
 
-        http.sessionManagement()
-                .maximumSessions(1)
-                .maxSessionsPreventsLogin(true);
         return http.build();
+    }
+
+    public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
+        @Override
+        public void configure(HttpSecurity http) throws Exception {
+            AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+            http
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager));
+
+        }
     }
 }
