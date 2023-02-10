@@ -8,10 +8,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -40,7 +42,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             System.out.println("로그인 완료");
 
             return authentication;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -54,12 +56,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // hash방식으로 작동
         String jwtToken = JWT.create()
                 .withSubject("TaxiProjectToken")
-                .withExpiresAt(new Date(System.currentTimeMillis() + (60000 * 1000))) // 10분
+                .withExpiresAt(new Date(System.currentTimeMillis() + (60000 * 1))) // 1분
                 .withClaim("id", principalDetails.getUser().getUserId())
                 .withClaim("name", principalDetails.getUser().getName())
                 .sign(Algorithm.HMAC512("gongdeok is soooooo cute"));
 
         response.addHeader("Authorization", "Bearer " + jwtToken);
+        response.getWriter().write(new ObjectMapper().writeValueAsString("Bearer " + jwtToken));
 
     }
 }

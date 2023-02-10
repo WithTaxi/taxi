@@ -2,6 +2,8 @@ package com.withtaxi.taxi.config;
 
 import com.withtaxi.taxi.config.oauth.PrincipalOauth2UserService;
 import com.withtaxi.taxi.jwt.JwtAuthenticationFilter;
+import com.withtaxi.taxi.jwt.JwtAuthorizationFilter;
+import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final PrincipalOauth2UserService principalOauth2UserService;
+    private final UserRepository userRepository;
 
 
 
@@ -34,6 +37,9 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .apply(new MyCustomDsl())
                 .and()
+                .authorizeRequests()
+                .antMatchers("/", "/**").permitAll()
+                .and()
                 // oauth설정
                 .oauth2Login()
                 .userInfoEndpoint()
@@ -47,7 +53,8 @@ public class SecurityConfig {
         public void configure(HttpSecurity http) throws Exception {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http
-                    .addFilter(new JwtAuthenticationFilter(authenticationManager));
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
 
         }
     }
