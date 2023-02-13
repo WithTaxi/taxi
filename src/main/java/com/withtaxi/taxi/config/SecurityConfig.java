@@ -1,6 +1,7 @@
 package com.withtaxi.taxi.config;
 
 import com.withtaxi.taxi.config.oauth.PrincipalOauth2UserService;
+import com.withtaxi.taxi.handler.CustomAuthenticationFailure;
 import com.withtaxi.taxi.jwt.JwtAuthenticationFilter;
 import com.withtaxi.taxi.jwt.JwtAuthorizationFilter;
 import com.withtaxi.taxi.repository.UserRepository;
@@ -15,6 +16,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.Filter;
+
 
 @Configuration
 @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터체인에 등록되도록 함
@@ -23,6 +26,7 @@ public class SecurityConfig {
 
     private final PrincipalOauth2UserService principalOauth2UserService;
     private final UserRepository userRepository;
+    private final CustomAuthenticationFailure customAuthenticationFailure;
 
 
 

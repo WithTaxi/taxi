@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.withtaxi.taxi.config.auth.PrincipalDetails;
+import com.withtaxi.taxi.handler.CustomAuthenticationFailure;
 import com.withtaxi.taxi.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,11 +39,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
-            PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
             System.out.println("로그인 완료");
 
             return authentication;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // hash방식으로 작동
         String jwtToken = JWT.create()
                 .withSubject("TaxiProjectToken")
-                .withExpiresAt(new Date(System.currentTimeMillis() + (60000 * 1))) // 1분
+                .withExpiresAt(new Date(System.currentTimeMillis() + (60000 * 100))) // 1분
                 .withClaim("id", principalDetails.getUser().getUserId())
                 .withClaim("name", principalDetails.getUser().getName())
                 .sign(Algorithm.HMAC512("gongdeok is soooooo cute"));
