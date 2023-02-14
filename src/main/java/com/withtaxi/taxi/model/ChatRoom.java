@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 
 @Getter
@@ -25,6 +24,7 @@ public class ChatRoom {
 
 
     @Transient
+    @Convert
     private HashMap<String, String> userlist = new HashMap<String, String>();
 
     public ChatRoom create(String name,String userId) {
