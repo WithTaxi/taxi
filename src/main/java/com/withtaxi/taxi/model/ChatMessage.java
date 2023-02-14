@@ -13,7 +13,7 @@ public class ChatMessage {
         ENTER, TALK, LEAVE
     }
 
-    private MessageType type;
+    private MessageType type; // 메세지 타입
 
     private String roomId;    //채팅방 ID
 
