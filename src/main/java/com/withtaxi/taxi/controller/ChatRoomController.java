@@ -1,5 +1,6 @@
 package com.withtaxi.taxi.controller;
 
+import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.model.ChatRoom;
 import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.repository.UserRepository;
@@ -48,8 +49,9 @@ public class ChatRoomController {
     // 채팅방 생성
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name, Principal principal) {
-        return chatService.createRoom(name, principal.getName());
+    public ChatRoom createRoom(@RequestParam String name, Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        return chatService.createRoom(name, principalDetails.getUser().getUserId());
     }
 
     // 채팅방 입장 화면

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,23 +27,26 @@ public class UserController {
     /***
      * user 정보 조회 API
      * 내정보
-     * @param principalDetails
+     * @param authentication
      * @return principalDetails.getUser()
      */
     @GetMapping("/info")
-    public User user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public User user(Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+
         return principalDetails.getUser();
     }
 
 
     /***
      * 회원탈퇴
-     * @param principalDetails
+     * @param authentication jwt토큰이 헤더에 달려있어야함
      * @return 회원탈퇴시 1 반환
      */
     @DeleteMapping("/withdrawal")
-    public int removeUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        return userService.removeUser(principalDetails.getUsername());
+    public int removeUser(Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        return userService.removeUser(principalDetails.getUser().getUserId());
     }
 
     /***
@@ -67,42 +71,44 @@ public class UserController {
     /***
      * 비밀번호 재확인
      * @param passwordMap
-     * @param principalDetails
+     * @param authentication
      * @return 비밀번호 일치시 1
      *         비밀번호 불일치시 0 반환
      *         +
      *         httpStatus 200 ok 반환
      */
     @PostMapping("/checkPassword")
-    public ResponseEntity<Integer> checkPassword(@RequestBody Map<String, String> passwordMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<Integer> checkPassword(@RequestBody Map<String, String> passwordMap, Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         return new ResponseEntity(userService.checkPassword(passwordMap.get("password"), principalDetails), HttpStatus.OK);
     }
 
     /***
      * 비밀번호 수정
      * @param passwordMap
-     * @param principalDetails
+     * @param authentication
      * @return 비밀번호 변경 후 1 반환
      *         +
      *         httpStatus 200 ok 반환
      */
     @PutMapping("/modifyPassword")
-    public ResponseEntity<Integer> modifyPassword(@RequestBody Map<String, String> passwordMap, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-
+    public ResponseEntity<Integer> modifyPassword(@RequestBody Map<String, String> passwordMap, Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         return new ResponseEntity(userService.modifyUserPassword(passwordMap.get("password"), principalDetails), HttpStatus.OK);
     }
 
     /***
      * 회원정보 수정
      * @param user
-     * @param principalDetails
+     * @param authentication
      * @return 닉네임, 모바일, 이메일, 학교 변경
      *         변경 완료시 1 반환
      *         +
      *         httpStatus 200
      */
     @PutMapping("/modifyUserInfo")
-    public ResponseEntity<Integer> modifyUserInfo(@RequestBody User user, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<Integer> modifyUserInfo(@RequestBody User user, Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         return new ResponseEntity(userService.modifyUserInformation(principalDetails, user), HttpStatus.OK);
     }
 }

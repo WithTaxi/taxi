@@ -5,6 +5,7 @@ import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,10 +42,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int checkPassword(String password, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public int checkPassword(String password, PrincipalDetails principalDetails) {
         String reqPassword = password;
 
-        if (!passwordEncoder.matches(reqPassword, principalDetails.getPassword())) {
+        if (!passwordEncoder.matches(reqPassword, principalDetails.getUser().getPassword())) {
             return 0;
         }
         return 1;
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService{
         return 1;
     }
     @Override
-    public int modifyUserInformation(@AuthenticationPrincipal PrincipalDetails principalDetails, User user) {
+    public int modifyUserInformation(PrincipalDetails principalDetails, User user) {
         User modifyUser = principalDetails.getUser();
 
         modifyUser.setNickName(user.getNickName());
