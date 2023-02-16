@@ -40,13 +40,13 @@ public class UserController {
 
     /***
      * 회원탈퇴
-     * @param authentication
+     * @param authentication jwt토큰이 헤더에 달려있어야함
      * @return 회원탈퇴시 1 반환
      */
     @DeleteMapping("/withdrawal")
     public int removeUser(Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        return userService.removeUser(principalDetails.getUsername());
+        return userService.removeUser(principalDetails.getUser().getUserId());
     }
 
     /***
