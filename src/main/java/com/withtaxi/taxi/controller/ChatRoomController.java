@@ -24,7 +24,6 @@ public class ChatRoomController {
 
     @Autowired
     private final ChatService chatService;
-    private final UserRepository userRepository;
 
 
     // 채팅 리스트 화면
@@ -38,6 +37,13 @@ public class ChatRoomController {
     @ResponseBody
     public List<ChatRoom> room() {
         return chatService.findAllRoom();
+    }
+
+    // 모든 채팅방 목록 반환
+    @GetMapping("/roomss")
+    @ResponseBody
+    public List<ChatRoom> room1() {
+        return chatService.findAllRoom1();
     }
 
     // 채팅방 생성
