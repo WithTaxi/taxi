@@ -2,6 +2,8 @@ package com.withtaxi.taxi.service;
 
 import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.model.User;
+import com.withtaxi.taxi.model.dto.UserRequestDto;
+import com.withtaxi.taxi.model.dto.UserResponseDto;
 import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,16 +23,16 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User findId(String name, String email) {
-        User result = null;
+    public String findId(String name, String email) {
+        User user = null;
 
         try {
-            result = userRepository.findByNameAndEmail(name, email);
+            user = userRepository.findByNameAndEmail(name, email);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return result;
+        return new UserResponseDto(user).getUserId();
     }
 
     @Override
@@ -65,7 +67,7 @@ public class UserServiceImpl implements UserService{
         return 1;
     }
     @Override
-    public int modifyUserInformation(PrincipalDetails principalDetails, User user) {
+    public int modifyUserInformation(PrincipalDetails principalDetails, UserRequestDto user) {
         User modifyUser = principalDetails.getUser();
 
         modifyUser.setNickName(user.getNickName());
