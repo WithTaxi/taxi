@@ -1,6 +1,7 @@
 package com.withtaxi.taxi.controller;
 
 import com.withtaxi.taxi.model.User;
+import com.withtaxi.taxi.model.dto.UserRequestDto;
 import com.withtaxi.taxi.service.JoinService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class JoinController {
      * @return db에 값 저장
      */
     @PostMapping("")
-    public User registerUser(@RequestBody User user) {
+    public User registerUser(@RequestBody UserRequestDto user) {
         return joinService.registerUser(user);
     }
 

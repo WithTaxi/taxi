@@ -1,14 +1,17 @@
 package com.withtaxi.taxi.controller;
 
+import com.nimbusds.oauth2.sdk.dpop.verifiers.AccessTokenValidationException;
 import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.model.User;
+import com.withtaxi.taxi.model.dto.TokenDto;
+import com.withtaxi.taxi.model.dto.TokenRequestDto;
+import com.withtaxi.taxi.model.dto.UserRequestDto;
 import com.withtaxi.taxi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -56,16 +59,10 @@ public class UserController {
      *         일치하는 아이디가 없으면 NPE
      */
     @PostMapping("/findId")
-    public String findId(@RequestBody User user) {
-        String name = user.getName();
-        String email = user.getEmail();
+    public ResponseEntity findId(@RequestBody UserRequestDto user) {
 
-        try {
-            User result = userService.findId(name, email);
-            return result.getUserId();
-        } catch (NullPointerException e) {
-            return "존재하지 않는 회원 정보입니다.";
-        }
+        return new ResponseEntity(userService.findId(user.getName(), user.getEmail()), HttpStatus.OK);
+
     }
 
     /***
@@ -107,8 +104,14 @@ public class UserController {
      *         httpStatus 200
      */
     @PutMapping("/modifyUserInfo")
-    public ResponseEntity<Integer> modifyUserInfo(@RequestBody User user, Authentication authentication) {
+    public ResponseEntity<Integer> modifyUserInfo(@RequestBody UserRequestDto user, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         return new ResponseEntity(userService.modifyUserInformation(principalDetails, user), HttpStatus.OK);
     }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequestDto tokenRequestDto) throws AccessTokenValidationException {
+        return new ResponseEntity<>(userService.reissue(tokenRequestDto), HttpStatus.OK);
+    }
+
 }
