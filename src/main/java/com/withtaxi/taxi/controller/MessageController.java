@@ -5,20 +5,18 @@ import com.withtaxi.taxi.model.ChatMessage;
 import com.withtaxi.taxi.service.ChatService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@Slf4j
 @Data
 public class MessageController {
 
@@ -39,7 +37,7 @@ public class MessageController {
 
             headerAccessor.getSessionAttributes().put("userUUID",userUUID);
             headerAccessor.getSessionAttributes().put("roomId",chat.getRoomId());
-            chat.setMessage(chat.getSender() + " 님이 입장하셨습니다");
+            chat.setMessage(chat.getSender()+ " 님이 입장하셨습니다");
             chat.setSender("[알림]");
         }
         sendingOperations.convertAndSend("/topic/chat/room/"+chat.getRoomId(),chat);
