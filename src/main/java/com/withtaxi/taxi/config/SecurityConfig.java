@@ -4,6 +4,8 @@ import com.withtaxi.taxi.config.oauth.PrincipalOauth2UserService;
 import com.withtaxi.taxi.handler.CustomAuthenticationFailure;
 import com.withtaxi.taxi.jwt.JwtAuthenticationFilter;
 import com.withtaxi.taxi.jwt.JwtAuthorizationFilter;
+import com.withtaxi.taxi.jwt.JwtProvider;
+import com.withtaxi.taxi.repository.RefreshTokenRepository;
 import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,8 @@ public class SecurityConfig {
     private final PrincipalOauth2UserService principalOauth2UserService;
     private final UserRepository userRepository;
     private final CustomAuthenticationFailure customAuthenticationFailure;
+    private final JwtProvider jwtProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
 
 
@@ -46,7 +50,6 @@ public class SecurityConfig {
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService);
-
         return http.build();
     }
 
@@ -54,9 +57,10 @@ public class SecurityConfig {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+
             http
-                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager, jwtProvider, refreshTokenRepository))
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository, jwtProvider));
 
         }
     }
