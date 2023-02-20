@@ -11,8 +11,6 @@ import java.sql.Timestamp;
 @Entity
 @Data
 @NoArgsConstructor
-@Getter
-@Setter
 public class User {
     @Id
     private String userId;
@@ -46,7 +44,7 @@ public class User {
                 String role,
                 String provider,
                 String providerId,
-              Timestamp createDate) {
+                Timestamp createDate) {
         this.userId = userId;
         this.password = password;
         this.name = name;

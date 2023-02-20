@@ -1,7 +1,5 @@
 package com.withtaxi.taxi.jwt;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.repository.UserRepository;
@@ -20,28 +18,33 @@ import java.io.IOException;
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
+
+
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository, JwtProvider jwtProvider) {
         super(authenticationManager);
         this.userRepository = userRepository;
+        this.jwtProvider = jwtProvider;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        String jwtHeader = request.getHeader("Authorization");
+
+        String jwtHeader = jwtProvider.resolveToken(request);
 
         if (jwtHeader == null || !jwtHeader.startsWith("Bearer")) {
             chain.doFilter(request, response);
             return;
         }
 
-        String jwtToken = request.getHeader("Authorization").replace("Bearer ", "");
+        String jwtToken = jwtProvider.resolveToken(request).replace("Bearer ", "");
+        String userId = jwtProvider.getUserId(jwtToken);
 
-        String userId =
-                JWT.require(Algorithm.HMAC512("gongdeok is soooooo cute")).build().verify(jwtToken).getClaim("id").asString();
 
-        if (userId != null) {
+
+        if (jwtToken != null && jwtProvider.validationToken(jwtToken)) {
             User userEntity = userRepository.findByUserId(userId);
 
             PrincipalDetails principalDetails = new PrincipalDetails(userEntity);

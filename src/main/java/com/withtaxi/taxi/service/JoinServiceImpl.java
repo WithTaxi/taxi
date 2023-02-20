@@ -1,6 +1,7 @@
 package com.withtaxi.taxi.service;
 
 import com.withtaxi.taxi.model.User;
+import com.withtaxi.taxi.model.dto.UserRequestDto;
 import com.withtaxi.taxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,12 +16,12 @@ public class JoinServiceImpl implements JoinService{
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User registerUser(User user) {
+    public User registerUser(UserRequestDto user) {
         String rawPassword = user.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
         user.setRole("USER");
-        return userRepository.save(user);
+        return userRepository.save(user.toEntity());
     }
 
     @Override
