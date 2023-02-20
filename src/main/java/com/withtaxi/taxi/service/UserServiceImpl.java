@@ -1,14 +1,20 @@
 package com.withtaxi.taxi.service;
 
+import com.nimbusds.oauth2.sdk.dpop.verifiers.AccessTokenValidationException;
 import com.withtaxi.taxi.config.auth.PrincipalDetails;
+import com.withtaxi.taxi.jwt.JwtProvider;
 import com.withtaxi.taxi.model.User;
+import com.withtaxi.taxi.model.dto.TokenDto;
+import com.withtaxi.taxi.model.dto.TokenRequestDto;
 import com.withtaxi.taxi.model.dto.UserRequestDto;
 import com.withtaxi.taxi.model.dto.UserResponseDto;
+import com.withtaxi.taxi.model.RefreshToken;
+import com.withtaxi.taxi.repository.RefreshTokenRepository;
 import com.withtaxi.taxi.repository.UserRepository;
+import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public String findId(String name, String email) {
@@ -78,5 +85,30 @@ public class UserServiceImpl implements UserService{
         userRepository.save(modifyUser);
 
         return 1;
+    }
+
+    @Override
+    public TokenDto reissue(TokenRequestDto tokenRequestDto) throws SignatureException, AccessTokenValidationException {
+        if (!jwtProvider.validationToken(tokenRequestDto.getRefreshToken())) {
+            throw new AccessTokenValidationException(tokenRequestDto.getRefreshToken());
+        }
+
+        String accessToken = tokenRequestDto.getAccessToken();
+        Authentication authentication = jwtProvider.getAuthentication(accessToken);
+
+        User user = userRepository.findByUserId(authentication.getName());
+        RefreshToken refreshToken = refreshTokenRepository.findByUserKey(user.getUserId());
+
+        if (!refreshToken.getToken().equals(tokenRequestDto.getRefreshToken())) {
+            throw new SignatureException(tokenRequestDto.getRefreshToken());
+        }
+
+        TokenDto newCreatedToken = jwtProvider.createToken(user.getUserId(), user.getUniversity());
+        RefreshToken updateRefreshToken = refreshToken.updateToken(newCreatedToken.getRefreshToken());
+
+
+        refreshTokenRepository.save(updateRefreshToken);
+
+        return newCreatedToken;
     }
 }

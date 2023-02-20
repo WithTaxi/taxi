@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.model.User;
 import com.withtaxi.taxi.model.dto.TokenDto;
-import com.withtaxi.taxi.repository.RefreshToken;
+import com.withtaxi.taxi.model.RefreshToken;
 import com.withtaxi.taxi.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
