@@ -44,7 +44,7 @@ public class User {
                 String role,
                 String provider,
                 String providerId,
-              Timestamp createDate) {
+                Timestamp createDate) {
         this.userId = userId;
         this.password = password;
         this.name = name;
