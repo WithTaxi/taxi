@@ -17,54 +17,52 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 // 제발
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/chat")
+@RequestMapping("api")
 public class ChatRoomController {
 
-    @Autowired
     private final ChatService chatService;
 
 
-    // 채팅 리스트 화면
-    @GetMapping("/room")
-    public String rooms(Model model) {
-        return "/chat/room";
-    }
+//    // 채팅 리스트 화면
+//    @GetMapping("/room")
+//    public String rooms(Model model) {
+//        return "/chat/room";
+//    }
 
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
-    @ResponseBody
     public List<ChatRoom> room() {
         return chatService.findAllRoom();
     }
 
+
     // 모든 채팅방 목록 반환
     @GetMapping("/roomss")
-    @ResponseBody
     public List<ChatRoom> room1() {
         return chatService.findAllRoom1();
     }
 
     // 채팅방 생성
     @PostMapping("/room")
-    @ResponseBody
     public ChatRoom createRoom(@RequestParam String name, Authentication authentication) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         return chatService.createRoom(name, principalDetails.getUser().getUserId());
     }
 
-    // 채팅방 입장 화면
-    @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId) {
-        model.addAttribute("roomId", roomId);
-        return "/chat/roomdetail";
-    }
+
+
+//    // 채팅방 입장 화면
+//    @GetMapping("/room/enter/{roomId}")x
+//    public String roomDetail(Model model, @PathVariable String roomId) {
+//        model.addAttribute("roomId", roomId);
+//        return "/chat/roomdetail";
+//    }
 
 
     // 특정 채팅방 정보
     @GetMapping("/rooms/{roomId}")
-    @ResponseBody
     public ChatRoom roomFind(@PathVariable String roomId){
         return chatService.findByRoomId(roomId);
     }
