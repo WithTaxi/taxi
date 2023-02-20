@@ -1,20 +1,19 @@
 package com.withtaxi.taxi.controller;
 
+import com.nimbusds.oauth2.sdk.dpop.verifiers.AccessTokenValidationException;
 import com.withtaxi.taxi.config.auth.PrincipalDetails;
 import com.withtaxi.taxi.model.User;
+import com.withtaxi.taxi.model.dto.TokenDto;
+import com.withtaxi.taxi.model.dto.TokenRequestDto;
 import com.withtaxi.taxi.model.dto.UserRequestDto;
-import com.withtaxi.taxi.model.dto.UserResponseDto;
 import com.withtaxi.taxi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -109,4 +108,10 @@ public class UserController {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         return new ResponseEntity(userService.modifyUserInformation(principalDetails, user), HttpStatus.OK);
     }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequestDto tokenRequestDto) throws AccessTokenValidationException {
+        return new ResponseEntity<>(userService.reissue(tokenRequestDto), HttpStatus.OK);
+    }
+
 }
