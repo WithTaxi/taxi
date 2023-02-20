@@ -1,20 +1,16 @@
 package com.withtaxi.taxi.jwt;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.withtaxi.taxi.config.auth.PrincipalDetails;
-import com.withtaxi.taxi.handler.CustomAuthenticationFailure;
 import com.withtaxi.taxi.model.User;
+import com.withtaxi.taxi.model.dto.TokenDto;
+import com.withtaxi.taxi.repository.RefreshToken;
+import com.withtaxi.taxi.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -22,11 +18,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     // /login으로 오면 일로들어옴
     @Override
@@ -53,16 +50,32 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
-        // hash방식으로 작동
-        String jwtToken = JWT.create()
-                .withSubject("TaxiProjectToken")
-                .withExpiresAt(new Date(System.currentTimeMillis() + (60000 * 100))) // 1분
-                .withClaim("id", principalDetails.getUser().getUserId())
-                .withClaim("name", principalDetails.getUser().getName())
-                .sign(Algorithm.HMAC512("gongdeok is soooooo cute"));
+        TokenDto tokenDto = jwtProvider.createToken(principalDetails.getUser().getUserId(), principalDetails.getUser().getUniversity());
 
-        response.addHeader("Authorization", "Bearer " + jwtToken);
-        response.getWriter().write(new ObjectMapper().writeValueAsString("Bearer " + jwtToken));
+        RefreshToken refreshToken = RefreshToken.builder()
+                .userKey(principalDetails.getUser().getUserId())
+                .token(tokenDto.getRefreshToken())
+                .build();
+        refreshTokenRepository.save(refreshToken);
+
+
+
+//        // hash방식으로 작동
+//        String jwtToken = JWT.create()
+//                .withSubject("TaxiProjectToken")
+//                .withExpiresAt(new Date(System.currentTimeMillis() + (60000 * 100))) // 1분
+//                .withClaim("id", principalDetails.getUser().getUserId())
+//                .withClaim("name", principalDetails.getUser().getName())
+//                .sign(Algorithm.HMAC512(""));
+//
+//        String refreshToken = JWT.create()
+//                .withExpiresAt(new Date(System.currentTimeMillis() + 14 * 24 * 60 * 1000L))
+//                .sign(Algorithm.HMAC512(""));
+
+        response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
+        response.addHeader("Refresh-Token", "Bearer " + tokenDto.getRefreshToken());
+        response.getWriter().write(new ObjectMapper().writeValueAsString(tokenDto));
 
     }
 }
+
