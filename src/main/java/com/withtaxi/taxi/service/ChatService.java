@@ -36,6 +36,20 @@ public class ChatService {
         return chatRepository.save(chatRoom);
     }
 
+    // 사용자 목록에 사용자 추가
+    public String addUser(String roomId, String userName) {
+        ChatRoom room = chatRepository.findByRoomId(roomId);
+        ChatRoom room1 = chatRooms.get(roomId);
+        if (room != null) {
+            String userUUID = UUID.randomUUID().toString();
+            room.getUserlist().put(userUUID, userName);
+            room1.getUserlist().put(userUUID, userName);
+            return userUUID;
+        } else {
+            return roomId;
+        }
+    }
+
 
     // jpa 채팅방 찾기
     public ChatRoom findByRoomId(String roomId){
@@ -45,7 +59,9 @@ public class ChatService {
     // 채팅방 삭제
     public void deleteRoom(String roomId){
         ChatRoom chatRoom = chatRepository.findByRoomId(roomId);
+        ChatRoom room1 = chatRooms.get(roomId);
         chatRepository.delete(chatRoom);
+        chatRooms.remove(room1);
     }
 
     //채팅방 조회
@@ -59,6 +75,7 @@ public class ChatService {
         //채팅방 최근 생성 순으로 반환
         List<ChatRoom> result = new ArrayList<>(chatRooms.values());
         Collections.reverse(result);
+
 
         return result;
     }
@@ -93,19 +110,6 @@ public class ChatService {
     }
 
 
-    // 사용자 목록에 사용자 추가
-    public String addUser(String roomId, String userName) {
-        ChatRoom room = chatRepository.findByRoomId(roomId);
-        ChatRoom room1 = chatRooms.get(roomId);
-        if (room != null) {
-            String userUUID = UUID.randomUUID().toString();
-            room.getUserlist().put(userUUID, userName);
-            room1.getUserlist().put(userUUID, userName);
-            return userUUID;
-        } else {
-            return roomId;
-        }
-    }
 
     // 사용자 목록에서 사용자 삭제
     public void removeUser(String roomId, String userUUID){
