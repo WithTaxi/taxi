@@ -14,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.InvalidParameterException;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.util.Map;
 
 /**
@@ -110,8 +113,14 @@ public class UserController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequestDto tokenRequestDto) throws AccessTokenValidationException {
-        return new ResponseEntity<>(userService.reissue(tokenRequestDto), HttpStatus.OK);
+    public ResponseEntity<?> reissue(@RequestBody TokenRequestDto tokenRequestDto) throws Exception {
+        try {
+            return new ResponseEntity<>(userService.reissue(tokenRequestDto), HttpStatus.OK);
+        } catch (InvalidParameterException e) {
+            return new ResponseEntity<>("유효하지 않은 토큰입니다", HttpStatus.BAD_REQUEST);
+        } catch (SignatureException e) {
+            return new ResponseEntity<>("서명이 다른 토큰입니다", HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
