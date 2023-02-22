@@ -22,7 +22,7 @@ public class JwtProvider {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    private Long tokenValidMillisecond = 6 * 1 * 1000L; // 1분
+    private Long tokenValidMillisecond = 60 * 30 * 1000L; // 1시간
     private Long refreshTokenValidMillisecond = 14 * 24 * 60 * 60 * 1000L;
 
 
