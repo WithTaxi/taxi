@@ -10,9 +10,13 @@ import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+
+import java.util.UUID;
 
 
 @RestController
@@ -21,10 +25,8 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 public class MessageController {
 
     private final SimpMessageSendingOperations sendingOperations;
-
-
-    @Autowired
-    ChatService service;
+    private final ChatService service;
+    private final SimpMessagingTemplate template;
 
     @MessageMapping("/chat/message")
     public void enterUser(ChatMessage chat, SimpMessageHeaderAccessor headerAccessor){
@@ -32,7 +34,7 @@ public class MessageController {
 
         if (ChatMessage.MessageType.ENTER.equals(chat.getType())) {
 
-            String userUUID = service.addUser(chat.getRoomId(), chat.getSender());
+            String userUUID = UUID.randomUUID().toString();
             service.increaseUserCount(chat.getRoomId());
 
             headerAccessor.getSessionAttributes().put("userUUID",userUUID);
@@ -54,7 +56,6 @@ public class MessageController {
 
 
         String username = service.getUserName(roomId,userUUID);
-        service.removeUser(roomId, userUUID);
         service.decreaseUserCount(roomId);
 
         if (username != null ){

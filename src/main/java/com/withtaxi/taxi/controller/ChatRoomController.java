@@ -7,6 +7,7 @@ import com.withtaxi.taxi.repository.UserRepository;
 import com.withtaxi.taxi.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.converter.MessageConversionException;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.security.core.Authentication;
@@ -16,20 +17,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
+
 // 제발
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api")
+@RequestMapping("/chat")
 public class ChatRoomController {
 
     private final ChatService chatService;
 
 
-//    // 채팅 리스트 화면
-//    @GetMapping("/room")
-//    public String rooms(Model model) {
-//        return "/chat/room";
-//    }
+    // 채팅 리스트 화면
+    @GetMapping("/room")
+    public String rooms(Model model) {
+        return "/chat/room";
+    }
 
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
@@ -38,11 +41,6 @@ public class ChatRoomController {
     }
 
 
-    // 모든 채팅방 목록 반환
-    @GetMapping("/roomss")
-    public List<ChatRoom> room1() {
-        return chatService.findAllRoom1();
-    }
 
     // 채팅방 생성
     @PostMapping("/room")
@@ -53,12 +51,12 @@ public class ChatRoomController {
 
 
 
-//    // 채팅방 입장 화면
-//    @GetMapping("/room/enter/{roomId}")x
-//    public String roomDetail(Model model, @PathVariable String roomId) {
-//        model.addAttribute("roomId", roomId);
-//        return "/chat/roomdetail";
-//    }
+    // 채팅방 입장 화면
+    @GetMapping("/room/enter/{roomId}")
+    public String roomDetail(Model model, @PathVariable String roomId) {
+        model.addAttribute("roomId", roomId);
+        return "/chat/roomdetail";
+    }
 
 
     // 특정 채팅방 정보
