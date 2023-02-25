@@ -30,6 +30,6 @@ public interface UserService {
 
     int modifyUserInformation(PrincipalDetails principalDetails, UserRequestDto user);
 
-    TokenDto reissue(TokenRequestDto requestDto) throws SignatureException, ExpiredJwtException, AccessTokenValidationException;
+    TokenDto reissue(TokenRequestDto requestDto) throws Exception;
 }
 
